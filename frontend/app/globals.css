@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #0c0a0b;
+  --bg-surface: #120f10;
+  --bg-elevated: #1a1518;
+  --bg-hover: #201a1c;
+  --border: #2a2025;
+  --border-light: #332830;
+  --text-primary: #f5f0f1;
+  --text-secondary: #9a8d90;
+  --text-muted: #5a4d50;
+  --accent: #8B1A2F;
+  --accent-hover: #a01f37;
+  --accent-light: #8B1A2F18;
+  --accent-mid: #8B1A2F35;
+  --green: #22c55e;
+  --green-dim: #22c55e20;
+  --blue: #3b82f6;
+  --blue-dim: #3b82f620;
+  --red: #ef4444;
+  --red-dim: #ef444420;
+  --purple: #a855f7;
+  --purple-dim: #a855f720;
+  --amber: #f5a623;
+  --amber-dim: #f5a62320;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg-base); color: var(--text-primary); font-family: 'Outfit', sans-serif; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
