@@ -108,7 +108,19 @@ export class PropertiesService {
     const { data, error } = await this.supabase.client
       .from('properties')
       .insert({
-        ...dto,
+        title: dto.title,
+        description: dto.description,
+        listing_type: dto.listing_type,
+        property_type: dto.property_type,
+        price: dto.price,
+        bedrooms: dto.bedrooms,
+        bathrooms: dto.bathrooms,
+        size_sqm: dto.size_sqm,
+        address: dto.address,
+        city: dto.city,
+        province: dto.province,
+        mandate_type: dto.mandate_type,
+        mandate_expiry: dto.mandate_expiry,
         status: 'draft',
         currency: 'ZMW',
         listed_by: user.sub,

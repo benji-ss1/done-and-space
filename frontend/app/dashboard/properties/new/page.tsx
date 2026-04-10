@@ -11,7 +11,7 @@ export default function NewPropertyPage() {
   const [form, setForm] = useState({
     title: '', description: '', type: 'sale', property_type: 'apartment',
     price: '', bedrooms: '', bathrooms: '', size_sqm: '',
-    address: '', city: '', state: 'Lusaka',
+    address: '', city: '', province: 'Lusaka',
     mandate_type: 'exclusive', mandate_expiry: '',
   });
 
@@ -116,7 +116,7 @@ export default function NewPropertyPage() {
           </div>
           <div>
             <label style={labelStyle}>Province</label>
-            <select value={form.state} onChange={e => set('state', e.target.value)} style={inputStyle}>
+            <select value={form.province} onChange={e => set('province', e.target.value)} style={inputStyle}>
               {ZAMBIA_PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
