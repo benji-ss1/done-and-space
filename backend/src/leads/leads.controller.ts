@@ -11,6 +11,10 @@ export class LeadsController {
   @Post('inquiry')
   createPublic(@Body() dto: any) { return this.service.createPublic(dto); }
 
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  create(@Body() dto: any, @Req() req: any) { return this.service.create(dto, req.user); }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('super_admin','admin','manager','staff','compliance','agent')
   @Get()

@@ -1,9 +1,8 @@
 'use client';
 import { useState } from 'react';
-import { leadsAPI } from '@/lib/api';
+import { apiFetch } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save } from 'lucide-react';
-import axios from 'axios';
 
 export default function NewLeadPage() {
   const router = useRouter();
@@ -11,7 +10,7 @@ export default function NewLeadPage() {
   const [error, setError] = useState('');
   const [form, setForm] = useState({
     full_name: '', email: '', phone: '', source: 'website',
-    interest_type: 'buying', budget_min: '', budget_max: '',
+    interest_type: 'buy', budget_min: '', budget_max: '',
     preferred_area: '', notes: '',
   });
 
@@ -22,14 +21,22 @@ export default function NewLeadPage() {
     setSaving(true);
     setError('');
     try {
-      await axios.post('http://localhost:3001/api/v1/leads/inquiry', {
-        ...form,
-        budget_min: form.budget_min ? Number(form.budget_min) : undefined,
-        budget_max: form.budget_max ? Number(form.budget_max) : undefined,
-      });
+      const payload: any = {
+        full_name: form.full_name,
+        phone: form.phone,
+        interest_type: form.interest_type,
+        source: form.source,
+      };
+      if (form.email) payload.email = form.email;
+      if (form.budget_min) payload.budget_min = Number(form.budget_min);
+      if (form.budget_max) payload.budget_max = Number(form.budget_max);
+      if (form.preferred_area) payload.preferred_area = form.preferred_area;
+      if (form.notes) payload.notes = form.notes;
+
+      await apiFetch('/leads', { method: 'POST', body: JSON.stringify(payload) });
       router.push('/dashboard/leads');
     } catch (e: any) {
-      setError(e.response?.data?.message || 'Failed to create lead.');
+      setError(e.message || 'Failed to create lead.');
     }
     setSaving(false);
   };
@@ -65,13 +72,13 @@ export default function NewLeadPage() {
           <div>
             <label style={labelStyle}>Lead Source</label>
             <select value={form.source} onChange={e => set('source', e.target.value)} style={inputStyle}>
-              {['website','whatsapp','referral','walk_in','social_media','phone_call','agent'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s.replace(/_/g,' ')}</option>)}
+              {['website','whatsapp','referral','agent','walk_in','social','facebook','email','other'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s.replace(/_/g,' ')}</option>)}
             </select>
           </div>
           <div>
             <label style={labelStyle}>Interest Type</label>
             <select value={form.interest_type} onChange={e => set('interest_type', e.target.value)} style={inputStyle}>
-              {['buying','selling','renting','landlord'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s}</option>)}
+              {['buy','rent','sell','let','invest'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s}</option>)}
             </select>
           </div>
           <div>
