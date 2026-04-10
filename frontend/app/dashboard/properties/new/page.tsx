@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { propertiesAPI } from '@/lib/api';
+import { apiFetch } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save } from 'lucide-react';
 
@@ -9,7 +9,7 @@ export default function NewPropertyPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
-    title: '', description: '', listing_type: 'sale', property_type: 'apartment',
+    title: '', description: '', listing_type: 'for_sale', property_type: 'house',
     price: '', bedrooms: '', bathrooms: '', size_sqm: '',
     address: '', city: '', province: 'Lusaka',
     mandate_type: 'exclusive', mandate_expiry: '',
@@ -23,17 +23,25 @@ export default function NewPropertyPage() {
     if (!form.title || !form.price || !form.address || !form.city) { setError('Title, price, address and city are required.'); return; }
     setSaving(true); setError('');
     try {
-      await propertiesAPI.create({
-        ...form,
+      const payload = {
+        title: form.title,
+        listing_type: form.listing_type,
+        property_type: form.property_type,
         price: Number(form.price),
+        city: form.city || undefined,
+        description: form.description || undefined,
+        address: form.address || undefined,
+        province: form.province || undefined,
         bedrooms: form.bedrooms ? Number(form.bedrooms) : undefined,
         bathrooms: form.bathrooms ? Number(form.bathrooms) : undefined,
         size_sqm: form.size_sqm ? Number(form.size_sqm) : undefined,
+        mandate_type: form.mandate_type || undefined,
         mandate_expiry: form.mandate_expiry || undefined,
-      });
+      };
+      await apiFetch('/properties', { method: 'POST', body: JSON.stringify(payload) });
       router.push('/dashboard/properties');
     } catch (e: any) {
-      setError(e.response?.data?.message || 'Failed to create property.');
+      setError(e.message || 'Failed to create property.');
     }
     setSaving(false);
   };
@@ -63,14 +71,14 @@ export default function NewPropertyPage() {
           <div>
             <label style={labelStyle}>Listing Type *</label>
             <select value={form.listing_type} onChange={e => set('listing_type', e.target.value)} style={inputStyle}>
-              <option value="sale">For Sale</option>
-              <option value="let">To Let</option>
+              <option value="for_sale">For Sale</option>
+              <option value="to_let">To Let</option>
             </select>
           </div>
           <div>
             <label style={labelStyle}>Property Type *</label>
             <select value={form.property_type} onChange={e => set('property_type', e.target.value)} style={inputStyle}>
-              {['apartment','house','land','commercial','mixed_use'].map(t => <option key={t} value={t} style={{ textTransform: 'capitalize' }}>{t.replace('_',' ')}</option>)}
+              {['house','apartment','land','commercial','office'].map(t => <option key={t} value={t} style={{ textTransform: 'capitalize' }}>{t}</option>)}
             </select>
           </div>
           <div style={{ gridColumn: '1 / -1' }}>

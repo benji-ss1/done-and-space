@@ -105,27 +105,29 @@ export class PropertiesService {
 
   // ── CREATE listing (draft) ──
   async create(dto: CreatePropertyDto, user: any) {
+    const insertData = {
+      title: dto.title,
+      description: dto.description,
+      listing_type: dto.listing_type,
+      property_type: dto.property_type,
+      price: dto.price,
+      bedrooms: dto.bedrooms,
+      bathrooms: dto.bathrooms,
+      size_sqm: dto.size_sqm,
+      address: dto.address,
+      city: dto.city,
+      province: dto.province,
+      mandate_type: dto.mandate_type,
+      mandate_expiry: dto.mandate_expiry || null,
+      status: 'draft',
+      currency: 'ZMW',
+      listed_by: user.sub,
+      branch_id: user.branch_id,
+    };
+    console.log('INSERT PAYLOAD:', JSON.stringify(insertData));
     const { data, error } = await this.supabase.client
       .from('properties')
-      .insert({
-        title: dto.title,
-        description: dto.description,
-        listing_type: dto.listing_type,
-        property_type: dto.property_type,
-        price: dto.price,
-        bedrooms: dto.bedrooms,
-        bathrooms: dto.bathrooms,
-        size_sqm: dto.size_sqm,
-        address: dto.address,
-        city: dto.city,
-        province: dto.province,
-        mandate_type: dto.mandate_type,
-        mandate_expiry: dto.mandate_expiry || null,
-        status: 'draft',
-        currency: 'ZMW',
-        listed_by: user.sub,
-        branch_id: user.branch_id,
-      })
+      .insert(insertData)
       .select()
       .single();
 
