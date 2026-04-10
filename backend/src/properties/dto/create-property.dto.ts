@@ -1,17 +1,10 @@
-import { IsString, IsNumber, IsOptional, IsEnum, IsDateString } from 'class-validator';
-
-export enum ListingType {
-  FOR_SALE = 'for_sale',
-  TO_LET = 'to_let',
-}
-
-export enum PropertyType {
-  HOUSE = 'house',
-  APARTMENT = 'apartment',
-  LAND = 'land',
-  COMMERCIAL = 'commercial',
-  OFFICE = 'office',
-}
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsIn,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreatePropertyDto {
   @IsString()
@@ -21,24 +14,28 @@ export class CreatePropertyDto {
   @IsString()
   description?: string;
 
-  @IsEnum(ListingType)
-  listing_type: ListingType;
+  @IsIn(['for_sale', 'to_let'])
+  listing_type: string;
 
-  @IsEnum(PropertyType)
-  property_type: PropertyType;
+  @IsIn(['house', 'apartment', 'land', 'commercial', 'office'])
+  property_type: string;
 
+  @Type(() => Number)
   @IsNumber()
   price: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   bedrooms?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   bathrooms?: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   size_sqm?: number;
 
@@ -62,6 +59,6 @@ export class CreatePropertyDto {
   mandate_type?: string;
 
   @IsOptional()
-  @IsDateString()
+  @IsString()
   mandate_expiry?: string;
 }
