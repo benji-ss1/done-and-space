@@ -5,16 +5,17 @@ export class LoginDto {
 
 export class CreatePropertyDto {
   title: string;
-  description: string;
-  type: string;
+  description?: string;
+  listing_type: string;
   property_type: string;
   price: number;
   bedrooms?: number;
   bathrooms?: number;
   size_sqm?: number;
-  address: string;
+  address?: string;
   city: string;
-  state: string;
+  province?: string;
+  state?: string;
   mandate_type?: string;
   mandate_expiry?: string;
   branch_id?: string;
@@ -23,18 +24,21 @@ export class CreatePropertyDto {
 export class UpdatePropertyDto {
   title?: string;
   description?: string;
+  listing_type?: string;
+  property_type?: string;
   price?: number;
   bedrooms?: number;
   bathrooms?: number;
+  size_sqm?: number;
   address?: string;
   city?: string;
+  province?: string;
   state?: string;
   mandate_type?: string;
   mandate_expiry?: string;
 }
 
 export class SearchPropertiesDto {
-  type?: string;
   listing_type?: string;
   property_type?: string;
   city?: string;
@@ -50,8 +54,8 @@ export class SearchPropertiesDto {
 export class CreateLeadDto {
   full_name: string;
   email?: string;
-  phone: string;
-  source: string;
+  phone?: string;
+  source?: string;
   interest_type?: string;
   budget_min?: number;
   budget_max?: number;
