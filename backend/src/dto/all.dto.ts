@@ -13,9 +13,8 @@ export class CreatePropertyDto {
   bathrooms?: number;
   size_sqm?: number;
   address?: string;
-  city: string;
+  city?: string;
   province?: string;
-  state?: string;
   mandate_type?: string;
   mandate_expiry?: string;
   branch_id?: string;
@@ -33,7 +32,6 @@ export class UpdatePropertyDto {
   address?: string;
   city?: string;
   province?: string;
-  state?: string;
   mandate_type?: string;
   mandate_expiry?: string;
 }
