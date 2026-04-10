@@ -29,6 +29,7 @@ export default function NewPropertyPage() {
         bedrooms: form.bedrooms ? Number(form.bedrooms) : undefined,
         bathrooms: form.bathrooms ? Number(form.bathrooms) : undefined,
         size_sqm: form.size_sqm ? Number(form.size_sqm) : undefined,
+        mandate_expiry: form.mandate_expiry || undefined,
       });
       router.push('/dashboard/properties');
     } catch (e: any) {

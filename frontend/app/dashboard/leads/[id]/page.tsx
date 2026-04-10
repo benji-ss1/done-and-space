@@ -38,7 +38,10 @@ export default function LeadDetailPage() {
   const submitLog = async () => {
     if (!logForm.notes.trim()) return;
     setSaving(true);
-    await leadsAPI.interact(id, logForm);
+    await leadsAPI.interact(id, {
+      ...logForm,
+      next_action_date: logForm.next_action_date || undefined,
+    });
     setLogForm({ type: 'call', notes: '', outcome: '', new_status: '', next_action_date: '' });
     setShowLog(false);
     await load();
