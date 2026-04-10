@@ -38,9 +38,12 @@ export default function PropertiesPage() {
   const loadProperties = async () => {
     setLoading(true);
     try {
-      const res = await apiFetch('/properties');
-      setProperties(res.data || res || []);
+      const result = await apiFetch('/properties/admin/all');
+      console.log('Properties API response:', result);
+      const list = Array.isArray(result) ? result : (result.data || result.properties || []);
+      setProperties(list);
     } catch (e) {
+      console.error('Failed to load properties:', e);
       setProperties([]);
     } finally {
       setLoading(false);

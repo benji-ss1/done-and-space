@@ -11,8 +11,8 @@ export default function NewLeadPage() {
   const [error, setError] = useState('');
   const [form, setForm] = useState({
     full_name: '', email: '', phone: '', source: 'website',
-    interest_type: 'buy', budget_min: '', budget_max: '',
-    preferred_location: '', notes: '',
+    interest_type: 'buying', budget_min: '', budget_max: '',
+    preferred_area: '', notes: '',
   });
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
@@ -65,13 +65,13 @@ export default function NewLeadPage() {
           <div>
             <label style={labelStyle}>Lead Source</label>
             <select value={form.source} onChange={e => set('source', e.target.value)} style={inputStyle}>
-              {['website','whatsapp','referral','agent','walk_in','social','other'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s.replace('_',' ')}</option>)}
+              {['website','whatsapp','referral','walk_in','social_media','phone_call','agent'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s.replace(/_/g,' ')}</option>)}
             </select>
           </div>
           <div>
             <label style={labelStyle}>Interest Type</label>
             <select value={form.interest_type} onChange={e => set('interest_type', e.target.value)} style={inputStyle}>
-              {['buy','rent','sell','let','invest'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s}</option>)}
+              {['buying','selling','renting','landlord'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s}</option>)}
             </select>
           </div>
           <div>
@@ -84,7 +84,7 @@ export default function NewLeadPage() {
           </div>
           <div style={{ gridColumn: '1 / -1' }}>
             <label style={labelStyle}>Preferred Location</label>
-            <input value={form.preferred_location} onChange={e => set('preferred_location', e.target.value)} placeholder="e.g. Lusaka, Kabulonga" style={inputStyle} />
+            <input value={form.preferred_area} onChange={e => set('preferred_area', e.target.value)} placeholder="e.g. Lusaka, Kabulonga" style={inputStyle} />
           </div>
           <div style={{ gridColumn: '1 / -1' }}>
             <label style={labelStyle}>Notes</label>

@@ -17,6 +17,7 @@ export class LeadsService {
 
   // ── PUBLIC: capture inquiry from website ──
   async createPublic(dto: CreateLeadDto) {
+    console.log('LEAD PAYLOAD:', JSON.stringify(dto));
     const { data, error } = await this.supabase.client
       .from('leads')
       .insert({
