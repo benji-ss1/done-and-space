@@ -120,7 +120,7 @@ export class PropertiesService {
         city: dto.city,
         province: dto.province,
         mandate_type: dto.mandate_type,
-        mandate_expiry: dto.mandate_expiry,
+        mandate_expiry: dto.mandate_expiry || null,
         status: 'draft',
         currency: 'ZMW',
         listed_by: user.sub,

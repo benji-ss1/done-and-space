@@ -140,7 +140,7 @@ export class LeadsService {
         notes: dto.notes,
         outcome: dto.outcome,
         next_action: dto.next_action,
-        next_action_date: dto.next_action_date,
+        next_action_date: dto.next_action_date || null,
         logged_by: user.sub,
       }).select().single(),
       this.supabase.client.from('leads').update(updates).eq('id', leadId),

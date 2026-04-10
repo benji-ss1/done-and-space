@@ -36,6 +36,7 @@ export class DealsService {
       .from('deals')
       .insert({
         ...dto,
+        expected_close_date: dto.expected_close_date || null,
         stage: 'qualification',
         probability,
         currency: 'ZMW',
