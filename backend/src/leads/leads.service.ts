@@ -23,7 +23,6 @@ export class LeadsService {
         ...dto,
         status: 'new',
         source: dto.source || 'website',
-        currency: 'ZMW',
       })
       .select()
       .single();
@@ -140,7 +139,7 @@ export class LeadsService {
         type: dto.type,
         notes: dto.notes,
         outcome: dto.outcome,
-        
+        next_action: dto.next_action,
         next_action_date: dto.next_action_date,
         logged_by: user.sub,
       }).select().single(),

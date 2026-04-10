@@ -57,7 +57,7 @@ export class CreateLeadDto {
   interest_type?: string;
   budget_min?: number;
   budget_max?: number;
-  preferred_location?: string;
+  preferred_area?: string;
   notes?: string;
   property_id?: string;
   branch_id?: string;
@@ -88,7 +88,7 @@ export class CreateDealDto {
   commission_rate?: number;
   agent_split_percent?: number;
   notes?: string;
-  close_date?: string;
+  expected_close_date?: string;
 }
 
 export class UpdateDealDto {
@@ -97,5 +97,5 @@ export class UpdateDealDto {
   commission_rate?: number;
   agent_split_percent?: number;
   notes?: string;
-  close_date?: string;
+  expected_close_date?: string;
 }
