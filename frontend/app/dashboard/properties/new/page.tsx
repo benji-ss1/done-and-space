@@ -9,7 +9,7 @@ export default function NewPropertyPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
-    title: '', description: '', type: 'sale', property_type: 'apartment',
+    title: '', description: '', listing_type: 'sale', property_type: 'apartment',
     price: '', bedrooms: '', bathrooms: '', size_sqm: '',
     address: '', city: '', province: 'Lusaka',
     mandate_type: 'exclusive', mandate_expiry: '',
@@ -62,7 +62,7 @@ export default function NewPropertyPage() {
           </div>
           <div>
             <label style={labelStyle}>Listing Type *</label>
-            <select value={form.type} onChange={e => set('type', e.target.value)} style={inputStyle}>
+            <select value={form.listing_type} onChange={e => set('listing_type', e.target.value)} style={inputStyle}>
               <option value="sale">For Sale</option>
               <option value="let">To Let</option>
             </select>
