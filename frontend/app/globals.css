@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,8 +29,36 @@
   --amber-dim: #f5a62320;
 }
 
+/* Public site variables */
+.public-site {
+  --pub-bg: #0a0608;
+  --pub-bg-card: rgba(255,255,255,0.03);
+  --pub-border: rgba(255,255,255,0.07);
+  --pub-border-hover: rgba(139,26,47,0.4);
+  --pub-text: rgba(255,255,255,0.92);
+  --pub-text-muted: rgba(255,255,255,0.45);
+  --pub-text-dim: rgba(255,255,255,0.25);
+  --pub-accent: #8B1A2F;
+  --pub-accent-hover: #a01f37;
+  --pub-accent-light: rgba(139,26,47,0.12);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg-base); color: var(--text-primary); font-family: 'Outfit', sans-serif; }
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
 ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+
+/* Public section helpers */
+.pub-section { padding: 80px 24px; }
+.pub-container { max-width: 1200px; margin: 0 auto; }
+.pub-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.pub-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 900px) {
+  .pub-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .pub-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .pub-section { padding: 56px 20px; }
+}
+@media (max-width: 600px) {
+  .pub-grid-3, .pub-grid-4 { grid-template-columns: 1fr; }
+}
