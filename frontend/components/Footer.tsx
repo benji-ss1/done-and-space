@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { LogoHorizontal } from './Logo';
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Share2 } from 'lucide-react';
 
 const col = (title: string, links: { label: string; href: string }[]) => ({ title, links });
 
@@ -48,16 +48,12 @@ export default function Footer() {
                 <MapPin size={13} style={{ color: '#8B1A2F', flexShrink: 0, marginTop: 1 }} /> Cairo Road, Lusaka, Zambia
               </span>
             </div>
-            <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-              {[
-                { Icon: Facebook, href: '#' },
-                { Icon: Instagram, href: '#' },
-                { Icon: Linkedin, href: '#' },
-              ].map(({ Icon, href }, i) => (
-                <a key={i} href={href} style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.45)', transition: 'all 0.15s', textDecoration: 'none' }}
+            <div style={{ display: 'flex', gap: 8, marginTop: 20, flexWrap: 'wrap' }}>
+              {['Facebook', 'Instagram', 'LinkedIn'].map((name, i) => (
+                <a key={i} href="#" style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)', fontSize: 12, textDecoration: 'none', transition: 'all 0.15s', fontFamily: 'Outfit, sans-serif' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,26,47,0.2)'; e.currentTarget.style.color = '#c0374f'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.45)'; }}>
-                  <Icon size={15} />
+                  <Share2 size={11} /> {name}
                 </a>
               ))}
             </div>
