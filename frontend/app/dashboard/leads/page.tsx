@@ -9,7 +9,7 @@ export default function LeadsPage() {
   const [leads, setLeads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ full_name: '', email: '', phone: '', source: 'website', interest_type: 'buying', budget_min: '', budget_max: '', notes: '' });
+  const [form, setForm] = useState({ full_name: '', email: '', phone: '', source: 'website', interest_type: 'buy', budget_min: '', budget_max: '', notes: '' });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all');
@@ -28,7 +28,7 @@ export default function LeadsPage() {
     try {
       await apiFetch('/leads', { method: 'POST', body: JSON.stringify({ ...form, budget_min: form.budget_min ? parseFloat(form.budget_min) : null, budget_max: form.budget_max ? parseFloat(form.budget_max) : null }) });
       setShowForm(false);
-      setForm({ full_name: '', email: '', phone: '', source: 'website', interest_type: 'buying', budget_min: '', budget_max: '', notes: '' });
+      setForm({ full_name: '', email: '', phone: '', source: 'website', interest_type: 'buy', budget_min: '', budget_max: '', notes: '' });
       loadLeads();
     } catch (e: any) { setError(e.message); } finally { setSubmitting(false); }
   };
@@ -73,19 +73,21 @@ export default function LeadsPage() {
                     <option value="website">Website</option>
                     <option value="whatsapp">WhatsApp</option>
                     <option value="referral">Referral</option>
-                    <option value="walk_in">Walk In</option>
-                    <option value="social_media">Social Media</option>
-                    <option value="phone_call">Phone Call</option>
                     <option value="agent">Agent</option>
+                    <option value="walk_in">Walk In</option>
+                    <option value="social">Social Media</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="email">Email</option>
+                    <option value="other">Other</option>
                   </select>
                 </div>
                 <div><label style={labelStyle}>Interest</label>
                   <select style={inputStyle} value={form.interest_type} onChange={e => setForm({...form, interest_type: e.target.value})}>
-                    <option value="buying">Buying</option>
-                    <option value="selling">Selling</option>
-                    <option value="renting">Renting</option>
-                    <option value="landlord">Landlord Services</option>
-                    <option value="development">Development</option>
+                    <option value="buy">Buy</option>
+                    <option value="rent">Rent</option>
+                    <option value="sell">Sell</option>
+                    <option value="let">Let</option>
+                    <option value="invest">Invest</option>
                   </select>
                 </div>
               </div>
