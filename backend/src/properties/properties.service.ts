@@ -83,8 +83,7 @@ export class PropertiesService {
         price, currency, area, city, province, status,
         mandate_type, mandate_expiry, view_count, inquiry_count,
         created_at, updated_at,
-        users!listed_by(full_name),
-        users!approved_by(full_name),
+        listed_by, approved_by,
         branches(name)
       `);
 

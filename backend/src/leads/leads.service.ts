@@ -19,16 +19,18 @@ export class LeadsService {
   async create(dto: any, user: any) {
     const insertData: any = {
       full_name: dto.full_name,
+      phone: dto.phone || dto.phone_number,
       status: 'new',
       assigned_to: user.sub,
     };
     if (dto.email) insertData.email = dto.email;
-    if (dto.phone) insertData.phone = dto.phone;
-    if (dto.source) insertData.source = dto.source;
+    if (dto.source || dto.lead_source) insertData.source = dto.source || dto.lead_source;
     if (dto.interest_type) insertData.interest_type = dto.interest_type;
-    if (dto.budget_min) insertData.budget_min = dto.budget_min;
-    if (dto.budget_max) insertData.budget_max = dto.budget_max;
-    if (dto.preferred_area) insertData.preferred_area = dto.preferred_area;
+    if (dto.budget_min) insertData.budget_min = Number(dto.budget_min);
+    if (dto.budget_max) insertData.budget_max = Number(dto.budget_max);
+    if (dto.preferred_area || dto.preferred_location) {
+      insertData.preferred_area = dto.preferred_area || dto.preferred_location;
+    }
     if (dto.notes) insertData.notes = dto.notes;
 
     console.log('LEAD CREATE PAYLOAD:', JSON.stringify(insertData));
@@ -37,7 +39,11 @@ export class LeadsService {
       .insert(insertData)
       .select()
       .single();
-    if (error) throw new InternalServerErrorException(error.message);
+
+    if (error) {
+      this.logger.error('Lead create error:', error.message);
+      throw new InternalServerErrorException(error.message);
+    }
     return data;
   }
 
