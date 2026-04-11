@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { LogoHorizontal } from './Logo';
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 const col = (title: string, links: { label: string; href: string }[]) => ({ title, links });
 
@@ -52,7 +52,7 @@ export default function Footer() {
               {[
                 { Icon: Facebook, href: '#' },
                 { Icon: Instagram, href: '#' },
-                { Icon: Twitter, href: '#' },
+                { Icon: Linkedin, href: '#' },
               ].map(({ Icon, href }, i) => (
                 <a key={i} href={href} style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.45)', transition: 'all 0.15s', textDecoration: 'none' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,26,47,0.2)'; e.currentTarget.style.color = '#c0374f'; }}
