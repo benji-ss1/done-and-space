@@ -40,6 +40,7 @@ export class LeadsService {
       .select()
       .single();
 
+    console.log('LEAD INSERT RESULT:', JSON.stringify({ data, error }));
     if (error) {
       this.logger.error('Lead create error:', error.message);
       throw new InternalServerErrorException(error.message);
