@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { MapPin, Bed, Bath, Square } from 'lucide-react';
 
 interface PropertyCardProps {
   property: {
@@ -18,121 +17,135 @@ interface PropertyCardProps {
     images?: string[];
     status?: string;
     furnished?: boolean;
+    reference?: string;
   };
 }
 
-const typeLabels: any = { house: 'House', apartment: 'Apartment', land: 'Land', commercial: 'Commercial', office: 'Office' };
+const typeLabels: Record<string, string> = {
+  house: 'House', apartment: 'Apartment', land: 'Land',
+  commercial: 'Commercial', office: 'Office',
+};
 
-function formatPrice(price: number, currency = 'ZMW', listingType: string) {
+function formatPrice(price: number) {
   if (!price) return 'Price on request';
-  const formatted = price >= 1_000_000
-    ? `${(price / 1_000_000).toFixed(1)}M`
-    : price >= 1_000
-    ? `${(price / 1_000).toFixed(0)}K`
-    : price.toLocaleString();
-  return `${currency} ${formatted}${listingType === 'let' ? '/mo' : ''}`;
+  if (price >= 1_000_000) return `ZMW ${(price / 1_000_000).toFixed(2)}M`;
+  if (price >= 1_000) return `ZMW ${(price / 1_000).toFixed(0)}K`;
+  return `ZMW ${price.toLocaleString()}`;
 }
 
 export default function PropertyCard({ property: p }: PropertyCardProps) {
   const image = p.images?.[0];
-  const location = [p.location, p.city, p.province].filter(Boolean).join(', ') || 'Zambia';
+  const isLet = p.listing_type === 'let';
 
   return (
-    <Link href={`/properties/${p.id}`} style={{ textDecoration: 'none' }}>
-      <div style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderRadius: 14,
-        overflow: 'hidden',
-        transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
-        cursor: 'pointer',
-      }}
+    <Link href={`/properties/${p.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+      <div
+        style={{
+          background: 'white',
+          border: '1px solid var(--border, #E8DDD6)',
+          borderRadius: 4,
+          overflow: 'hidden',
+          transition: 'all 0.3s ease',
+          cursor: 'pointer',
+        }}
         onMouseEnter={e => {
-          e.currentTarget.style.transform = 'translateY(-3px)';
-          e.currentTarget.style.borderColor = 'rgba(139,26,47,0.4)';
-          e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.4)';
+          (e.currentTarget as HTMLDivElement).style.boxShadow = 'var(--shadow-hover, 0 12px 40px rgba(15,10,8,0.16))';
+          (e.currentTarget as HTMLDivElement).style.borderColor = 'transparent';
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)';
         }}
         onMouseLeave={e => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
-          e.currentTarget.style.boxShadow = 'none';
+          (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
+          (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border, #E8DDD6)';
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
         }}
       >
         {/* Image */}
-        <div style={{ position: 'relative', height: 200, background: 'rgba(255,255,255,0.04)', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', height: 220, overflow: 'hidden', background: 'linear-gradient(135deg, var(--brand-light, #F2E8EA) 0%, var(--cream, #F8F3ED) 100%)' }}>
           {image ? (
-            <img src={image} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={image} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            />
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="48" height="48" viewBox="0 0 40 40" fill="none">
-                <path d="M8 28L20 12L32 28" stroke="rgba(255,255,255,0.15)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M14 28V22C14 20.895 14.895 20 16 20H24C25.105 20 26 20.895 26 22V28" stroke="rgba(255,255,255,0.15)" strokeWidth="2.2" strokeLinecap="round" />
+              <svg width="56" height="56" viewBox="0 0 40 40" fill="none" opacity="0.3">
+                <path d="M8 28L20 12L32 28" stroke="var(--brand, #7B1D2A)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M14 28V22C14 20.895 14.895 20 16 20H24C25.105 20 26 20.895 26 22V28" stroke="var(--brand, #7B1D2A)" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
           )}
-          {/* Badges */}
-          <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', gap: 6 }}>
-            <span style={{
-              background: p.listing_type === 'let' ? '#3b82f6' : '#8B1A2F',
-              color: 'white',
-              padding: '3px 9px',
-              borderRadius: 20,
-              fontSize: 10.5,
-              fontWeight: 700,
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}>
-              {p.listing_type === 'let' ? 'For Rent' : 'For Sale'}
-            </span>
-            {p.property_type && (
-              <span style={{ background: 'rgba(0,0,0,0.55)', color: 'rgba(255,255,255,0.85)', padding: '3px 9px', borderRadius: 20, fontSize: 10.5, fontWeight: 600 }}>
-                {typeLabels[p.property_type] || p.property_type}
-              </span>
-            )}
+          {/* Listing type badge */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0,
+            background: isLet ? 'var(--gold, #C4992A)' : 'var(--brand, #7B1D2A)',
+            color: isLet ? 'var(--ink, #0F0A08)' : 'white',
+            padding: '6px 14px',
+            fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+            fontFamily: 'Outfit, sans-serif',
+          }}>
+            {isLet ? 'TO LET' : 'FOR SALE'}
           </div>
-          {p.furnished && (
-            <span style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(34,197,94,0.85)', color: 'white', padding: '3px 9px', borderRadius: 20, fontSize: 10.5, fontWeight: 600 }}>
-              Furnished
-            </span>
+          {/* Reference number */}
+          {p.reference && (
+            <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.6)', color: 'white', padding: '4px 10px', fontSize: 11, fontFamily: 'Outfit, sans-serif', borderRadius: 2 }}>
+              Ref: {p.reference}
+            </div>
           )}
         </div>
 
         {/* Content */}
-        <div style={{ padding: '16px 18px' }}>
-          <h3 style={{ color: 'rgba(255,255,255,0.9)', fontSize: 14.5, fontWeight: 600, lineHeight: 1.4, marginBottom: 6, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any }}>
-            {p.title}
-          </h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'rgba(255,255,255,0.38)', fontSize: 12, marginBottom: 14 }}>
-            <MapPin size={11} style={{ flexShrink: 0 }} />
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{location}</span>
-          </div>
-
-          {/* Stats */}
-          {(p.bedrooms || p.bathrooms || p.size_sqm) && (
-            <div style={{ display: 'flex', gap: 14, marginBottom: 14 }}>
-              {p.bedrooms != null && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>
-                  <Bed size={12} /> {p.bedrooms} bed
-                </div>
-              )}
-              {p.bathrooms != null && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>
-                  <Bath size={12} /> {p.bathrooms} bath
-                </div>
-              )}
-              {p.size_sqm && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>
-                  <Square size={12} /> {p.size_sqm} m²
-                </div>
-              )}
+        <div style={{ padding: '20px 20px 16px' }}>
+          {/* Property type chip */}
+          {p.property_type && (
+            <div style={{ display: 'inline-block', background: 'var(--surface-warm, #FAF7F4)', color: 'var(--ink-secondary, #4A3830)', fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', padding: '3px 10px', borderRadius: 2, textTransform: 'uppercase', marginBottom: 10, fontFamily: 'Outfit, sans-serif' }}>
+              {typeLabels[p.property_type] || p.property_type}
             </div>
           )}
 
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ color: '#c0374f', fontSize: 16, fontWeight: 700, fontFamily: 'Outfit, sans-serif' }}>
-              {formatPrice(p.price, p.currency, p.listing_type)}
+          {/* Title */}
+          <h3 style={{
+            fontFamily: 'var(--font-display, "Cormorant Garamond", Georgia, serif)',
+            fontSize: 20, fontWeight: 600, color: 'var(--ink, #0F0A08)',
+            lineHeight: 1.25, marginBottom: 8,
+            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden',
+          }}>
+            {p.title}
+          </h3>
+
+          {/* Location */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--ink-muted, #8C7B72)', fontSize: 13, marginBottom: 12 }}>
+            <span>📍</span>
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {[p.city, p.province].filter(Boolean).join(', ') || p.location || 'Zambia'}
             </span>
-            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11.5 }}>View →</span>
+          </div>
+
+          {/* Stats */}
+          {(p.bedrooms != null || p.bathrooms != null || p.size_sqm) && (
+            <div style={{ display: 'flex', gap: 16, marginBottom: 12, flexWrap: 'wrap' }}>
+              {p.bedrooms != null && <span style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13 }}>🛏 {p.bedrooms} bed</span>}
+              {p.bathrooms != null && <span style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13 }}>🚿 {p.bathrooms} bath</span>}
+              {p.size_sqm && <span style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13 }}>📐 {p.size_sqm}m²</span>}
+            </div>
+          )}
+
+          {/* Divider */}
+          <div style={{ borderTop: '1px solid var(--border, #E8DDD6)', margin: '14px 0' }} />
+
+          {/* Price + CTA */}
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
+            <div>
+              <span style={{
+                fontFamily: 'var(--font-display, "Cormorant Garamond", Georgia, serif)',
+                fontSize: 26, fontWeight: 700, color: 'var(--brand, #7B1D2A)',
+              }}>
+                {formatPrice(p.price)}
+              </span>
+              {isLet && <span style={{ color: 'var(--ink-muted, #8C7B72)', fontSize: 13, marginLeft: 4, fontFamily: 'Outfit, sans-serif' }}>/month</span>}
+            </div>
+            <span style={{ color: 'var(--brand, #7B1D2A)', fontSize: 13, fontWeight: 600, letterSpacing: '0.03em', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>
+              View Details →
+            </span>
           </div>
         </div>
       </div>

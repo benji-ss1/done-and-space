@@ -2,39 +2,45 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import PropertyCard from '../components/PropertyCard';
-import InquiryForm from '../components/InquiryForm';
-import { Search, Home, Key, TrendingUp, Users, Shield, Clock, ChevronRight, Star, Building2, MapPin } from 'lucide-react';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'https://done-space-backend-production.up.railway.app/api/v1';
 
+const SEARCH_TABS = ['Buy', 'Rent', 'Sell'] as const;
+
 const SERVICES = [
-  { icon: <Home size={24} />, title: 'Buy Property', desc: 'Find your dream home from our curated selection of residential and commercial listings across Zambia.', href: '/buy' },
-  { icon: <Key size={24} />, title: 'Rent a Home', desc: 'Discover quality rental properties from furnished apartments to family homes. Flexible terms available.', href: '/let' },
-  { icon: <TrendingUp size={24} />, title: 'Sell Your Property', desc: 'Get maximum value for your property. Our agents handle everything from valuation to final sale.', href: '/sell' },
-  { icon: <Building2 size={24} />, title: 'Landlord Services', desc: 'Full property management, tenant screening, and rent collection services for landlords.', href: '/landlords' },
-  { icon: <Users size={24} />, title: 'For Agents', desc: 'Join our network of professional agents and access exclusive listings and tools.', href: '/agents' },
-  { icon: <Shield size={24} />, title: 'Property Maintenance', desc: 'Comprehensive maintenance solutions to keep your property in perfect condition.', href: '/maintenance' },
+  { title: 'Buy Property', body: 'Verified listings across all provinces. From Kabulonga stands to Copperbelt apartments. Every listing confirmed before going live.', href: '/buy' },
+  { title: 'Expert Valuation & Marketing', body: 'We match you with serious, pre-qualified buyers and handle everything to transfer. Maximum price, minimum hassle.', href: '/sell' },
+  { title: 'Let Your Property', body: 'Quality tenant screening, lease management, and monthly rent collection. Peace of mind for landlords across Zambia.', href: '/landlords' },
+  { title: 'Find Rental Accommodation', body: 'Genuine rentals. No hidden fees. Lusaka to Livingstone. Browse verified listings and move in with confidence.', href: '/let' },
+  { title: 'Property Development', body: 'From stand development to full commercial builds. Backed by market data and a network of trusted contractors.', href: '/contact' },
+  { title: 'Property Maintenance', body: 'Preventive care and responsive repairs for property owners. Fast contractor dispatch, transparent pricing.', href: '/maintenance' },
+];
+
+const JOURNEYS = [
+  { title: 'I Want to Buy', body: "Looking for a 3-bedroom in Woodlands, a stand in Ibex Hill, or a commercial space in town? We have Zambia's most verified listings.", cta: 'Start Searching →', href: '/buy' },
+  { title: 'I Want to Sell', body: 'Get a proper market valuation and access to genuine buyers. No time-wasters. We handle everything from listing to title transfer.', cta: 'Get a Valuation →', href: '/sell' },
+  { title: "I'm a Landlord", body: "Tired of chasing rent? We screen tenants properly, collect monthly, and handle maintenance so you don't have to.", cta: 'Let Your Property →', href: '/landlords' },
+  { title: 'I Need to Rent', body: 'Find genuine, well-maintained rentals in the areas you want. Transparent pricing. Move-in ready. No surprises.', cta: 'Find Accommodation →', href: '/tenants' },
 ];
 
 const STATS = [
   { value: '500+', label: 'Properties Listed' },
-  { value: '1,200+', label: 'Happy Clients' },
-  { value: '10+', label: 'Years Experience' },
+  { value: '1,200+', label: 'Satisfied Clients' },
+  { value: '10+', label: 'Years in Market' },
   { value: '9', label: 'Provinces Covered' },
 ];
 
-const WHY_US = [
-  { icon: <Shield size={20} />, title: 'Licensed & Regulated', desc: 'Fully licensed real estate agency operating under Zambia\'s property laws.' },
-  { icon: <Clock size={20} />, title: 'Fast Turnaround', desc: 'Our team responds within 24 hours and closes deals faster than industry average.' },
-  { icon: <Star size={20} />, title: 'Trusted Agents', desc: 'Verified, experienced agents who put your interests first every step of the way.' },
-  { icon: <MapPin size={20} />, title: 'Nationwide Coverage', desc: 'Listings and agent presence across all provinces from Lusaka to Livingstone.' },
+const WHY_POINTS = [
+  'All listings verified before going live',
+  'Licensed and registered in Zambia',
+  'Dedicated agent for every transaction',
+  'Nationwide coverage across all 10 provinces',
+  'Transparent fees — no hidden charges',
 ];
-
-const SEARCH_TABS = ['buy', 'rent', 'sell'] as const;
 
 export default function HomePage() {
   const [featured, setFeatured] = useState<any[]>([]);
-  const [searchTab, setSearchTab] = useState<'buy' | 'rent' | 'sell'>('buy');
+  const [searchTab, setSearchTab] = useState<'Buy' | 'Rent' | 'Sell'>('Buy');
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -47,119 +53,157 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+  const searchHref = `/properties?type=${searchTab === 'Rent' ? 'let' : searchTab.toLowerCase()}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}`;
+
   return (
-    <main style={{ background: '#0a0608', minHeight: '100vh', color: 'white' }}>
+    <main style={{ background: 'var(--cream, #F8F3ED)' }}>
 
-      {/* HERO */}
-      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: 68 }}>
-        {/* Background */}
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139,26,47,0.18) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 80% 50%, rgba(139,26,47,0.08) 0%, transparent 60%)' }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+      {/* ─── HERO ─── */}
+      <section style={{
+        position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center',
+        paddingTop: 70, overflow: 'hidden',
+        background: 'linear-gradient(135deg, var(--brand-deep, #5C0A1A) 0%, var(--brand, #7B1D2A) 60%, #9B2D3A 100%)',
+      }}>
+        {/* Dot grid texture */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 24px', position: 'relative', width: '100%' }}>
-          <div style={{ maxWidth: 760 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(139,26,47,0.12)', border: '1px solid rgba(139,26,47,0.25)', padding: '6px 14px', borderRadius: 20, marginBottom: 24 }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#c0374f', boxShadow: '0 0 6px #c0374f' }} />
-              <span style={{ color: '#c0374f', fontSize: 12, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Zambia's Trusted Property Partner</span>
-            </div>
+        {/* Decorative large text behind */}
+        <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(100px, 20vw, 200px)', fontWeight: 700, color: 'rgba(255,255,255,0.03)', fontFamily: 'Cormorant Garamond, Georgia, serif', letterSpacing: '-0.05em', userSelect: 'none', pointerEvents: 'none', whiteSpace: 'nowrap' }}>
+          D&amp;S
+        </div>
 
-            <h1 style={{ fontSize: 'clamp(38px, 6vw, 68px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: 22 }}>
-              Find Your Perfect<br />
-              <span style={{ color: '#8B1A2F' }}>Property</span> in Zambia
-            </h1>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 24px 100px', position: 'relative', width: '100%' }}>
+          {/* Label pill */}
+          <div style={{ display: 'inline-block', border: '1px solid rgba(196,153,42,0.5)', color: 'var(--gold-light, #E8B84B)', padding: '6px 16px', borderRadius: 2, fontSize: 11, letterSpacing: '0.15em', fontFamily: 'Outfit, sans-serif', fontWeight: 500, marginBottom: 28, textTransform: 'uppercase' }}>
+            Lusaka · Copperbelt · Zambia
+          </div>
 
-            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 18, lineHeight: 1.7, marginBottom: 40, maxWidth: 560 }}>
-              Buy, rent, sell or let with confidence. Done & Space Properties connects you with exceptional homes, apartments and commercial spaces across all provinces.
-            </p>
+          {/* H1 */}
+          <h1 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', lineHeight: 1.08, marginBottom: 24, maxWidth: 700 }}>
+            <span style={{ display: 'block', fontSize: 'clamp(42px, 7vw, 80px)', fontWeight: 300, fontStyle: 'italic', color: 'white' }}>Your Property.</span>
+            <span style={{ display: 'block', fontSize: 'clamp(42px, 7vw, 80px)', fontWeight: 300, fontStyle: 'italic', color: 'white' }}>Our Expertise.</span>
+            <span style={{ display: 'block', fontSize: 'clamp(42px, 7vw, 80px)', fontWeight: 700, fontStyle: 'normal', color: 'var(--gold-light, #E8B84B)' }}>Done Right.</span>
+          </h1>
 
-            {/* Search bar */}
-            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, overflow: 'hidden', maxWidth: 620 }}>
-              <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                {SEARCH_TABS.map(tab => (
-                  <button key={tab} onClick={() => setSearchTab(tab)} style={{
-                    flex: 1, padding: '12px', background: searchTab === tab ? 'rgba(139,26,47,0.2)' : 'transparent',
-                    border: 'none', color: searchTab === tab ? '#c0374f' : 'rgba(255,255,255,0.45)',
-                    fontSize: 13, fontWeight: searchTab === tab ? 600 : 400, cursor: 'pointer',
-                    fontFamily: 'Outfit, sans-serif', textTransform: 'capitalize', transition: 'all 0.15s',
-                  }}>
-                    {tab === 'rent' ? 'Rent' : tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  </button>
-                ))}
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px' }}>
-                <Search size={18} style={{ color: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
-                <input
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  placeholder="Search by location, type or keyword..."
-                  style={{ flex: 1, background: 'none', border: 'none', color: 'white', fontSize: 14, outline: 'none', fontFamily: 'Outfit, sans-serif' }}
-                />
-                <Link href={`/properties?type=${searchTab === 'rent' ? 'let' : searchTab}&q=${encodeURIComponent(searchQuery)}`}
-                  style={{ background: '#8B1A2F', color: 'white', padding: '9px 18px', borderRadius: 9, fontSize: 13.5, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                  Search
-                </Link>
-              </div>
-            </div>
+          {/* Subtext */}
+          <p style={{ color: 'rgba(255,255,255,0.8)', fontFamily: 'Outfit, sans-serif', fontSize: 18, maxWidth: 520, lineHeight: 1.7, marginBottom: 40 }}>
+            From Kabulonga to Kitwe — Zambia's most trusted platform for buying, selling, letting and developing property.
+          </p>
 
-            {/* Quick links */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 24 }}>
-              {['Lusaka', 'Copperbelt', 'Livingstone', 'Ndola'].map(city => (
-                <Link key={city} href={`/properties?location=${city}`} style={{
-                  display: 'flex', alignItems: 'center', gap: 5,
-                  color: 'rgba(255,255,255,0.45)', textDecoration: 'none', fontSize: 13,
-                  padding: '5px 12px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 20, transition: 'all 0.15s',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.color = 'white'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.45)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; }}
-                >
-                  <MapPin size={11} /> {city}
-                </Link>
+          {/* Search bar */}
+          <div style={{ background: 'white', borderRadius: 4, overflow: 'hidden', maxWidth: 620, boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
+            {/* Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid #E8DDD6' }}>
+              {SEARCH_TABS.map(tab => (
+                <button key={tab} onClick={() => setSearchTab(tab)} style={{
+                  flex: 1, padding: '13px 8px',
+                  background: searchTab === tab ? 'var(--brand-ultra-light, #FBF5F6)' : 'transparent',
+                  border: 'none',
+                  borderBottom: searchTab === tab ? '2px solid var(--brand, #7B1D2A)' : '2px solid transparent',
+                  color: searchTab === tab ? 'var(--brand, #7B1D2A)' : '#8C7B72',
+                  fontSize: 13, fontWeight: searchTab === tab ? 600 : 400,
+                  cursor: 'pointer', fontFamily: 'Outfit, sans-serif',
+                  letterSpacing: '0.04em', transition: 'all 0.15s',
+                }}>
+                  {tab}
+                </button>
               ))}
             </div>
+            {/* Input row */}
+            <div style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', gap: 12 }}>
+              <span style={{ fontSize: 16 }}>🔍</span>
+              <input
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && (window.location.href = searchHref)}
+                placeholder="Search by area, e.g. Kabulonga, Woodlands, Ibex Hill..."
+                style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, fontFamily: 'Outfit, sans-serif', color: '#0F0A08', background: 'transparent' }}
+              />
+              <Link href={searchHref} style={{ background: 'var(--gold, #C4992A)', color: 'var(--ink, #0F0A08)', padding: '9px 20px', borderRadius: 2, fontSize: 13.5, fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap', letterSpacing: '0.03em' }}>
+                Search
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* STATS */}
-      <section style={{ padding: '0 24px 80px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, background: 'rgba(255,255,255,0.06)', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
-            {STATS.map((s, i) => (
-              <div key={i} style={{ background: 'rgba(10,6,8,0.9)', padding: '32px 24px', textAlign: 'center', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
-                <div style={{ color: '#c0374f', fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', fontFamily: 'Outfit, sans-serif' }}>{s.value}</div>
-                <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, marginTop: 6 }}>{s.label}</div>
-              </div>
+          {/* Area chips */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 20 }}>
+            {['📍 Lusaka', '📍 Copperbelt', '📍 Livingstone', '📍 Kitwe'].map((city, i) => (
+              <Link key={i} href={`/properties?location=${city.replace('📍 ', '')}`}
+                style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 13, padding: '5px 13px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 2, fontFamily: 'Outfit, sans-serif', transition: 'all 0.15s' }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.14)'; e.currentTarget.style.color = 'white'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}
+              >
+                {city}
+              </Link>
             ))}
           </div>
         </div>
+
+        {/* Scroll indicator */}
+        <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, color: 'rgba(255,255,255,0.35)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'Outfit, sans-serif' }}>
+          <span>Scroll</span>
+          <div style={{ animation: 'heroBounce 2s ease-in-out infinite' }}>↓</div>
+        </div>
       </section>
 
-      {/* SERVICES */}
-      <section style={{ padding: '80px 24px', background: 'rgba(255,255,255,0.015)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ marginBottom: 48, maxWidth: 520 }}>
-            <p style={{ color: '#8B1A2F', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>Our Services</p>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 1.2 }}>Everything You Need<br /><span style={{ color: 'rgba(255,255,255,0.45)' }}>Under One Roof</span></h2>
+      {/* ─── STATS ─── */}
+      <section style={{ background: 'white', padding: '40px 24px', borderBottom: '1px solid var(--border, #E8DDD6)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          {STATS.map((s, i) => (
+            <div key={i} style={{
+              textAlign: 'center', padding: '20px',
+              borderRight: i < 3 ? '1px solid var(--gold, #C4992A)' : 'none',
+            }}>
+              <div style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(36px, 4vw, 52px)', fontWeight: 700, color: 'var(--brand, #7B1D2A)', lineHeight: 1 }}>
+                {s.value}
+              </div>
+              <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted, #8C7B72)', marginTop: 8 }}>
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── SERVICES ─── */}
+      <section style={{ background: 'var(--cream, #F8F3ED)', padding: '96px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ marginBottom: 56 }}>
+            <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold, #C4992A)', display: 'block', marginBottom: 12 }}>
+              Our Services
+            </span>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 600, color: 'var(--ink, #0F0A08)', lineHeight: 1.15 }}>
+              Everything Property.<br /><span style={{ color: 'var(--ink-muted, #8C7B72)', fontWeight: 300 }}>Under One Roof.</span>
+            </h2>
+            <p style={{ color: 'var(--ink-muted, #8C7B72)', fontSize: 16, marginTop: 14, maxWidth: 480, fontFamily: 'Outfit, sans-serif', lineHeight: 1.65 }}>
+              From your first home to your next investment — we cover all of Zambia.
+            </p>
           </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-            {SERVICES.map(s => (
-              <Link key={s.href} href={s.href} style={{ textDecoration: 'none' }}>
+            {SERVICES.map((s, i) => (
+              <Link key={i} href={s.href} style={{ textDecoration: 'none' }}>
                 <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 14, padding: '28px', transition: 'all 0.2s', cursor: 'pointer',
+                  background: 'white', border: '1px solid var(--border, #E8DDD6)',
+                  borderRadius: 0, padding: '36px 28px', transition: 'all 0.25s ease', cursor: 'pointer', height: '100%',
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(139,26,47,0.35)'; e.currentTarget.style.background = 'rgba(139,26,47,0.06)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                  onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.borderColor = 'var(--brand, #7B1D2A)'; d.style.transform = 'translateY(-3px)'; d.style.boxShadow = '0 12px 40px rgba(15,10,8,0.1)'; }}
+                  onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.borderColor = 'var(--border, #E8DDD6)'; d.style.transform = 'translateY(0)'; d.style.boxShadow = 'none'; }}
                 >
-                  <div style={{ width: 44, height: 44, borderRadius: 10, background: 'rgba(139,26,47,0.15)', border: '1px solid rgba(139,26,47,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#c0374f', marginBottom: 18 }}>
-                    {s.icon}
+                  {/* Geometric icon */}
+                  <div style={{ width: 40, height: 40, marginBottom: 20 }}>
+                    <div style={{ width: 24, height: 24, background: 'var(--brand, #7B1D2A)', borderRadius: 0, opacity: 0.8 }} />
+                    <div style={{ width: 14, height: 14, background: 'var(--gold, #C4992A)', borderRadius: 0, marginTop: -8, marginLeft: 12 }} />
                   </div>
-                  <h3 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 10 }}>{s.title}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13.5, lineHeight: 1.65 }}>{s.desc}</p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#c0374f', fontSize: 13, fontWeight: 500, marginTop: 16 }}>
-                    Learn more <ChevronRight size={14} />
-                  </div>
+                  <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 22, fontWeight: 600, color: 'var(--ink, #0F0A08)', marginBottom: 12, lineHeight: 1.2 }}>
+                    {s.title}
+                  </h3>
+                  <p style={{ color: 'var(--ink-muted, #8C7B72)', fontSize: 14, lineHeight: 1.7, fontFamily: 'Outfit, sans-serif', marginBottom: 20 }}>
+                    {s.body}
+                  </p>
+                  <span style={{ color: 'var(--brand, #7B1D2A)', fontSize: 13.5, fontWeight: 600, fontFamily: 'Outfit, sans-serif', letterSpacing: '0.02em' }}>
+                    Learn more →
+                  </span>
                 </div>
               </Link>
             ))}
@@ -167,95 +211,155 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FEATURED PROPERTIES */}
-      <section style={{ padding: '80px 24px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 40, flexWrap: 'wrap', gap: 16 }}>
+      {/* ─── FOUR JOURNEYS ─── */}
+      <section style={{ background: 'var(--brand-deep, #5C0A1A)', padding: '96px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ marginBottom: 56, maxWidth: 600 }}>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 400, fontStyle: 'italic', color: 'white', lineHeight: 1.1, marginBottom: 16 }}>
+              Who Are You?
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'Outfit, sans-serif', fontSize: 16, lineHeight: 1.65 }}>
+              We have a dedicated path for every client in Zambia.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+            {JOURNEYS.map((j, i) => (
+              <div key={i}
+                style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.05)', padding: '44px 32px', borderRadius: 0, transition: 'all 0.25s ease', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+                onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.background = 'rgba(255,255,255,0.1)'; d.style.borderColor = 'rgba(196,153,42,0.4)'; }}
+                onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.background = 'rgba(255,255,255,0.05)'; d.style.borderColor = 'rgba(255,255,255,0.12)'; }}
+              >
+                <div style={{ width: 40, height: 3, background: 'var(--gold, #C4992A)', marginBottom: 24 }} />
+                <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 30, fontWeight: 600, color: 'white', marginBottom: 16, lineHeight: 1.15 }}>
+                  {j.title}
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'Outfit, sans-serif', fontSize: 14.5, lineHeight: 1.7, flex: 1, marginBottom: 28 }}>
+                  {j.body}
+                </p>
+                <Link href={j.href} style={{ color: 'var(--gold-light, #E8B84B)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, fontWeight: 600, textDecoration: 'none', letterSpacing: '0.02em', transition: 'letter-spacing 0.2s' }}>
+                  {j.cta}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FEATURED PROPERTIES ─── */}
+      <section style={{ background: 'var(--surface-warm, #FAF7F4)', padding: '96px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48, flexWrap: 'wrap', gap: 16 }}>
             <div>
-              <p style={{ color: '#8B1A2F', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>Properties</p>
-              <h2 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 700, letterSpacing: '-0.025em' }}>Featured Listings</h2>
+              <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold, #C4992A)', display: 'block', marginBottom: 10 }}>
+                Properties
+              </span>
+              <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 600, color: 'var(--ink, #0F0A08)' }}>
+                Featured Listings
+              </h2>
             </div>
-            <Link href="/properties" style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#c0374f', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>
-              View all properties <ChevronRight size={16} />
+            <Link href="/properties" style={{ color: 'var(--brand, #7B1D2A)', fontFamily: 'Outfit, sans-serif', fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
+              View All Properties →
             </Link>
           </div>
 
           {featured.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 22 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
               {featured.map(p => <PropertyCard key={p.id} property={p} />)}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: 'rgba(255,255,255,0.3)' }}>
-              <Building2 size={40} style={{ margin: '0 auto 12px', opacity: 0.3 }} />
-              <p>Listings loading...</p>
+            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--ink-faint, #C4B8B0)' }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>🏠</div>
+              <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 15 }}>Loading listings...</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* WHY CHOOSE US */}
-      <section style={{ padding: '80px 24px', background: 'rgba(255,255,255,0.015)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
-            <div>
-              <p style={{ color: '#8B1A2F', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>Why Choose Us</p>
-              <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: 20 }}>
-                Your Property Journey,<br />Done Right
-              </h2>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 15, lineHeight: 1.75, marginBottom: 32 }}>
-                We combine deep local knowledge with professional standards to deliver an exceptional property experience — whether you're a first-time buyer or seasoned investor.
-              </p>
-              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#8B1A2F', color: 'white', padding: '12px 22px', borderRadius: 10, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>
-                Get Free Consultation <ChevronRight size={15} />
-              </Link>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              {WHY_US.map((item, i) => (
-                <div key={i} style={{ display: 'flex', gap: 16, padding: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 9, background: 'rgba(139,26,47,0.15)', border: '1px solid rgba(139,26,47,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#c0374f', flexShrink: 0 }}>
-                    {item.icon}
-                  </div>
-                  <div>
-                    <h3 style={{ color: 'white', fontSize: 14.5, fontWeight: 600, marginBottom: 5 }}>{item.title}</h3>
-                    <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13.5, lineHeight: 1.6 }}>{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* ─── WHY DONE & SPACE ─── */}
+      <section style={{ background: 'white', padding: '96px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
+          <div>
+            <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold, #C4992A)', display: 'block', marginBottom: 16 }}>
+              Why Choose Us
+            </span>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(32px, 4vw, 50px)', fontWeight: 600, color: 'var(--ink, #0F0A08)', lineHeight: 1.15, marginBottom: 24 }}>
+              Built on Trust.<br />Backed by Results.
+            </h2>
+            <p style={{ color: 'var(--ink-secondary, #4A3830)', fontFamily: 'Outfit, sans-serif', fontSize: 15, lineHeight: 1.8, marginBottom: 18 }}>
+              Done & Space Properties was founded with one mission — to make property transactions in Zambia simple, transparent and fair. Whether you are a first-time buyer in Northmead or an investor developing in the Copperbelt, we bring the same discipline to every deal.
+            </p>
+            <p style={{ color: 'var(--ink-muted, #8C7B72)', fontFamily: 'Outfit, sans-serif', fontSize: 15, lineHeight: 1.8, marginBottom: 36 }}>
+              We verify every listing. We screen every inquiry. We track every deal from first contact to final transfer. Nothing falls through the cracks.
+            </p>
+            <Link href="/contact" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--brand, #7B1D2A)', color: 'white', padding: '14px 28px', fontSize: 14, fontWeight: 600, letterSpacing: '0.04em', fontFamily: 'Outfit, sans-serif', textDecoration: 'none', borderRadius: 2 }}>
+              Contact Our Team
+            </Link>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {WHY_POINTS.map((point, i) => (
+              <div key={i} style={{ borderLeft: '3px solid var(--gold, #C4992A)', paddingLeft: 20 }}>
+                <p style={{ color: 'var(--ink, #0F0A08)', fontFamily: 'Outfit, sans-serif', fontSize: 15, fontWeight: 500, lineHeight: 1.5 }}>
+                  {point}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* INQUIRY CTA */}
-      <section style={{ padding: '80px 24px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'start' }}>
-            <div>
-              <p style={{ color: '#8B1A2F', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>Get In Touch</p>
-              <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: 20 }}>
-                Ready to Find Your<br />Perfect Property?
-              </h2>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 15, lineHeight: 1.75, marginBottom: 28 }}>
-                Leave your details and one of our experienced agents will reach out to help you navigate the Zambian property market.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {['Free property consultation', 'Personalised property search', 'No obligation, no pressure'].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>
-                    <div style={{ width: 20, height: 20, borderRadius: '50%', background: 'rgba(139,26,47,0.2)', border: '1px solid rgba(139,26,47,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#c0374f' }} />
-                    </div>
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '32px' }}>
-              <h3 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 22 }}>Send an Inquiry</h3>
-              <InquiryForm />
-            </div>
+      {/* ─── BUYERS GUIDE PREVIEW ─── */}
+      <section style={{ background: 'var(--brand, #7B1D2A)', padding: '80px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(26px, 4vw, 42px)', fontWeight: 400, fontStyle: 'italic', color: 'white', marginBottom: 12, lineHeight: 1.15 }}>
+              The Done &amp; Space Guide to Buying Property in Zambia
+            </h2>
+            <p style={{ color: 'var(--gold-light, #E8B84B)', fontFamily: 'Outfit, sans-serif', fontSize: 15, lineHeight: 1.65 }}>
+              Everything you need to know before signing anything — from title searches to transfer taxes.
+            </p>
+          </div>
+          <Link href="/buyers-guide" style={{ background: 'var(--gold, #C4992A)', color: 'var(--ink, #0F0A08)', padding: '14px 28px', fontFamily: 'Outfit, sans-serif', fontSize: 14, fontWeight: 700, textDecoration: 'none', borderRadius: 2, whiteSpace: 'nowrap', letterSpacing: '0.02em' }}>
+            Download the Guide →
+          </Link>
+        </div>
+      </section>
+
+      {/* ─── CTA BAND ─── */}
+      <section style={{ background: 'var(--gold, #C4992A)', padding: '64px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center' }}>
+          <div>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 700, color: 'var(--ink-deep, #1A0F0D)', marginBottom: 8 }}>
+              Ready to Get Started?
+            </h2>
+            <p style={{ color: 'rgba(15,10,8,0.65)', fontFamily: 'Outfit, sans-serif', fontSize: 15 }}>
+              Talk to a real person. No bots. No delays.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <a href="https://wa.me/260971000000" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--ink-deep, #1A0F0D)', color: 'white', padding: '13px 24px', fontFamily: 'Outfit, sans-serif', fontSize: 14, fontWeight: 600, textDecoration: 'none', borderRadius: 2, letterSpacing: '0.02em' }}>
+              WhatsApp Us Now
+            </a>
+            <Link href="/properties" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent', color: 'var(--ink-deep, #1A0F0D)', padding: '13px 24px', fontFamily: 'Outfit, sans-serif', fontSize: 14, fontWeight: 600, textDecoration: 'none', borderRadius: 2, border: '2px solid var(--ink-deep, #1A0F0D)', letterSpacing: '0.02em' }}>
+              Browse Properties
+            </Link>
           </div>
         </div>
       </section>
+
+      <style>{`
+        @media (max-width: 900px) {
+          section > div > div[style*="repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+          section > div > div[style*="repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+          section > div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+          section > div[style*="grid-template-columns: 1fr auto"] { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 600px) {
+          section > div > div[style*="repeat("] { grid-template-columns: 1fr !important; }
+          section > div[style*="repeat(4, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+      `}</style>
     </main>
   );
 }

@@ -1,90 +1,120 @@
 'use client';
 import InquiryForm from '../../components/InquiryForm';
-import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 
-const OFFICES = [
-  {
-    city: 'Lusaka (Head Office)',
-    address: 'Cairo Road, Central Business District',
-    phone: '+260 971 000 000',
-    email: 'lusaka@doneandspace.com',
-    hours: 'Mon–Fri: 8am–5pm, Sat: 9am–1pm',
-  },
-  {
-    city: 'Copperbelt',
-    address: 'Broadway, Ndola',
-    phone: '+260 972 000 000',
-    email: 'copperbelt@doneandspace.com',
-    hours: 'Mon–Fri: 8am–5pm',
-  },
+const SUBJECTS = [
+  'Property Inquiry', 'Valuation Request', 'Rental Inquiry',
+  'Agent Application', 'Maintenance', 'General',
 ];
 
 export default function ContactPage() {
   return (
-    <main style={{ background: '#0a0608', minHeight: '100vh', paddingTop: 68 }}>
-      {/* Header */}
-      <section style={{ padding: '64px 24px 56px', background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(139,26,47,0.12) 0%, transparent 70%)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <p style={{ color: '#8B1A2F', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>Contact Us</p>
-          <h1 style={{ fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: 16 }}>Get In Touch</h1>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, maxWidth: 480, lineHeight: 1.7 }}>
-            Whether you're buying, selling or renting — our team is ready to help. Reach out through any of the channels below.
+    <main style={{ background: 'var(--cream, #F8F3ED)' }}>
+      {/* Hero */}
+      <section style={{ background: 'var(--brand, #7B1D2A)', padding: '80px 24px 72px', paddingTop: 'calc(70px + 64px)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold-light, #E8B84B)', display: 'block', marginBottom: 14 }}>
+            Contact Us
+          </span>
+          <h1 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 500, color: 'white', marginBottom: 16, lineHeight: 1.1 }}>
+            Talk to a Real Person
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'Outfit, sans-serif', fontSize: 17, maxWidth: 500, lineHeight: 1.65 }}>
+            No bots. No auto-replies. Our team is available Monday to Saturday.
           </p>
         </div>
       </section>
 
-      {/* Main content */}
-      <section style={{ padding: '0 24px 80px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 440px', gap: 56, alignItems: 'start' }}>
-          {/* Left */}
-          <div>
-            {/* Office cards */}
-            <h2 style={{ color: 'white', fontSize: 18, fontWeight: 700, marginBottom: 20 }}>Our Offices</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 40 }}>
-              {OFFICES.map((office, i) => (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '24px' }}>
-                  <h3 style={{ color: 'white', fontSize: 15, fontWeight: 600, marginBottom: 16 }}>{office.city}</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {[
-                      { icon: <MapPin size={13} />, text: office.address },
-                      { icon: <Phone size={13} />, text: office.phone },
-                      { icon: <Mail size={13} />, text: office.email },
-                      { icon: <Clock size={13} />, text: office.hours },
-                    ].map((item, j) => (
-                      <div key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, color: 'rgba(255,255,255,0.5)', fontSize: 13.5 }}>
-                        <span style={{ color: '#c0374f', marginTop: 1, flexShrink: 0 }}>{item.icon}</span>
-                        {item.text}
-                      </div>
-                    ))}
+      {/* Contact cards */}
+      <section style={{ padding: '0 24px', marginTop: -1 }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, transform: 'translateY(-40px)', boxShadow: '0 16px 48px rgba(15,10,8,0.12)' }}>
+          {/* Phone card */}
+          <div style={{ background: 'white', padding: '36px 32px', borderTop: '3px solid var(--gold, #C4992A)', borderRight: '1px solid var(--border, #E8DDD6)' }}>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted, #8C7B72)', marginBottom: 12 }}>Phone & WhatsApp</p>
+            <p style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 28, fontWeight: 700, color: 'var(--brand, #7B1D2A)', marginBottom: 8 }}>+260 971 000 000</p>
+            <p style={{ color: 'var(--ink-muted, #8C7B72)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
+              Call or WhatsApp — we respond within the hour during business hours.
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <a href="tel:+260971000000" style={{ background: 'var(--brand, #7B1D2A)', color: 'white', padding: '9px 18px', fontFamily: 'Outfit, sans-serif', fontSize: 13, fontWeight: 600, textDecoration: 'none', borderRadius: 2 }}>
+                Call Now
+              </a>
+              <a href="https://wa.me/260971000000" target="_blank" rel="noopener noreferrer" style={{ background: '#25D366', color: 'white', padding: '9px 18px', fontFamily: 'Outfit, sans-serif', fontSize: 13, fontWeight: 600, textDecoration: 'none', borderRadius: 2 }}>
+                WhatsApp
+              </a>
+            </div>
+          </div>
+
+          {/* Email card */}
+          <div style={{ background: 'white', padding: '36px 32px', borderTop: '3px solid var(--border-strong, #C4B8B0)', borderRight: '1px solid var(--border, #E8DDD6)' }}>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted, #8C7B72)', marginBottom: 12 }}>Email</p>
+            <p style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 22, fontWeight: 600, color: 'var(--ink, #0F0A08)', marginBottom: 8, wordBreak: 'break-all' }}>info@doneandspace.com</p>
+            <p style={{ color: 'var(--ink-muted, #8C7B72)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
+              Email us and we will respond within 2 business hours.
+            </p>
+            <a href="mailto:info@doneandspace.com" style={{ display: 'inline-block', background: 'var(--surface-warm, #FAF7F4)', border: '1px solid var(--border, #E8DDD6)', color: 'var(--ink, #0F0A08)', padding: '9px 18px', fontFamily: 'Outfit, sans-serif', fontSize: 13, fontWeight: 600, textDecoration: 'none', borderRadius: 2 }}>
+              Send Email
+            </a>
+          </div>
+
+          {/* Office card */}
+          <div style={{ background: 'white', padding: '36px 32px', borderTop: '3px solid var(--border-strong, #C4B8B0)' }}>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted, #8C7B72)', marginBottom: 12 }}>Office</p>
+            <p style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 24, fontWeight: 600, color: 'var(--ink, #0F0A08)', marginBottom: 8 }}>Lusaka, Zambia</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, color: 'var(--ink-muted, #8C7B72)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, lineHeight: 1.6 }}>
+              <p>📍 Cairo Road, Central Business District</p>
+              <p>⏰ Monday–Friday: 8:00am – 5:00pm</p>
+              <p>⏰ Saturday: 9:00am – 1:00pm</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Form section */}
+      <section style={{ padding: '0 24px 96px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 540px', gap: 64, alignItems: 'start' }}>
+          {/* Left copy */}
+          <div style={{ paddingTop: 16 }}>
+            <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold, #C4992A)', display: 'block', marginBottom: 14 }}>
+              Get in Touch
+            </span>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 600, color: 'var(--ink, #0F0A08)', lineHeight: 1.15, marginBottom: 20 }}>
+              Send Us a Message
+            </h2>
+            <p style={{ color: 'var(--ink-secondary, #4A3830)', fontFamily: 'Outfit, sans-serif', fontSize: 15, lineHeight: 1.8, marginBottom: 32 }}>
+              Whether you have a property to sell, need help finding the right home, or just want to understand the Zambian market — our team is ready to help. Leave your details and we will be in touch within 24 hours.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {[
+                { icon: '📞', title: 'Phone & WhatsApp', text: '+260 971 000 000' },
+                { icon: '✉', title: 'Email', text: 'info@doneandspace.com' },
+                { icon: '📍', title: 'Head Office', text: 'Cairo Road, Lusaka, Zambia' },
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                  <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>{item.icon}</span>
+                  <div>
+                    <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-muted, #8C7B72)', marginBottom: 3 }}>{item.title}</p>
+                    <p style={{ color: 'var(--ink, #0F0A08)', fontFamily: 'Outfit, sans-serif', fontSize: 14.5 }}>{item.text}</p>
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* WhatsApp */}
-            <div style={{ background: 'rgba(37,211,102,0.07)', border: '1px solid rgba(37,211,102,0.15)', borderRadius: 14, padding: '24px', display: 'flex', alignItems: 'center', gap: 18 }}>
-              <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#25D366', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <MessageCircle size={22} style={{ color: 'white' }} />
-              </div>
-              <div>
-                <h3 style={{ color: 'white', fontSize: 15, fontWeight: 600, marginBottom: 4 }}>Chat on WhatsApp</h3>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>Get instant responses from our team. Available during business hours.</p>
-                <a href="https://wa.me/260971000000" target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'inline-block', marginTop: 10, color: '#4ade80', fontSize: 13.5, fontWeight: 600, textDecoration: 'none' }}>
-                  +260 971 000 000 →
-                </a>
-              </div>
-            </div>
           </div>
 
           {/* Form */}
-          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: '32px', position: 'sticky', top: 88 }}>
-            <h2 style={{ color: 'white', fontSize: 18, fontWeight: 700, marginBottom: 6 }}>Send Us a Message</h2>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5, marginBottom: 24 }}>We respond to all inquiries within 24 hours.</p>
-            <InquiryForm />
+          <div style={{ background: 'white', border: '1px solid var(--border, #E8DDD6)', padding: '36px', borderTop: '3px solid var(--brand, #7B1D2A)' }}>
+            <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 24, fontWeight: 600, color: 'var(--ink, #0F0A08)', marginBottom: 6 }}>Your Message</h3>
+            <p style={{ color: 'var(--ink-muted, #8C7B72)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, marginBottom: 24 }}>We respond to all inquiries within 24 hours.</p>
+            <InquiryForm theme="light" />
           </div>
         </div>
       </section>
+
+      <style>{`
+        @media (max-width: 900px) {
+          section > div[style*="repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
+          section > div[style*="540px"] { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </main>
   );
 }

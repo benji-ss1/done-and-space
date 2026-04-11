@@ -1,92 +1,133 @@
+'use client';
 import Link from 'next/link';
 import { LogoHorizontal } from './Logo';
-import { Phone, Mail, MapPin, Globe, Share2 } from 'lucide-react';
 
-const col = (title: string, links: { label: string; href: string }[]) => ({ title, links });
-
-const COLUMNS = [
-  col('Services', [
-    { label: 'Buy Property', href: '/buy' },
-    { label: 'Rent a Home', href: '/let' },
-    { label: 'Sell Property', href: '/sell' },
-    { label: 'For Landlords', href: '/landlords' },
-    { label: 'For Tenants', href: '/tenants' },
-    { label: 'For Agents', href: '/agents' },
-  ]),
-  col('Company', [
-    { label: 'All Properties', href: '/properties' },
-    { label: 'Careers', href: '/careers' },
-    { label: 'Contact Us', href: '/contact' },
-    { label: 'Maintenance', href: '/maintenance' },
-  ]),
-  col('Legal', [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
-  ]),
+const COLS = [
+  {
+    title: 'Properties',
+    links: [
+      { label: 'Properties for Sale', href: '/properties?type=sale' },
+      { label: 'Properties to Let', href: '/properties?type=let' },
+      { label: 'New Listings', href: '/properties' },
+      { label: 'Search by Area', href: '/properties' },
+    ],
+  },
+  {
+    title: 'Services',
+    links: [
+      { label: 'For Buyers', href: '/buy' },
+      { label: 'For Sellers', href: '/sell' },
+      { label: 'For Landlords', href: '/landlords' },
+      { label: 'For Tenants', href: '/tenants' },
+      { label: 'Property Maintenance', href: '/maintenance' },
+      { label: 'Agent Network', href: '/agents' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About Done & Space', href: '/contact' },
+      { label: 'Careers', href: '/careers' },
+      { label: "Buyer's Guide", href: '/buyers-guide' },
+      { label: 'Contact Us', href: '/contact' },
+      { label: 'Privacy Policy', href: '#' },
+    ],
+  },
 ];
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#080508', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '64px 24px 0' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 56 }}>
-          {/* Brand column */}
-          <div>
-            <LogoHorizontal variant="light" size="md" />
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13.5, lineHeight: 1.7, marginTop: 18, maxWidth: 280 }}>
-              Zambia's trusted real estate partner. We connect buyers, sellers, landlords and tenants with exceptional properties across all provinces.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 9, marginTop: 22 }}>
-              <a href="tel:+260971000000" style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13 }}>
-                <Phone size={13} style={{ color: '#8B1A2F', flexShrink: 0 }} /> +260 971 000 000
-              </a>
-              <a href="mailto:info@doneandspace.com" style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13 }}>
-                <Mail size={13} style={{ color: '#8B1A2F', flexShrink: 0 }} /> info@doneandspace.com
-              </a>
-              <span style={{ display: 'flex', alignItems: 'flex-start', gap: 8, color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>
-                <MapPin size={13} style={{ color: '#8B1A2F', flexShrink: 0, marginTop: 1 }} /> Cairo Road, Lusaka, Zambia
-              </span>
-            </div>
-            <div style={{ display: 'flex', gap: 8, marginTop: 20, flexWrap: 'wrap' }}>
-              {['Facebook', 'Instagram', 'LinkedIn'].map((name, i) => (
-                <a key={i} href="#" style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)', fontSize: 12, textDecoration: 'none', transition: 'all 0.15s', fontFamily: 'Outfit, sans-serif' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,26,47,0.2)'; e.currentTarget.style.color = '#c0374f'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.45)'; }}>
-                  <Share2 size={11} /> {name}
-                </a>
+    <footer style={{ background: 'var(--ink-deep, #1A0F0D)', borderTop: '3px solid var(--gold, #C4992A)', fontFamily: 'Outfit, sans-serif' }}>
+      {/* Top row: logo + phone */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 24px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 20, borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <LogoHorizontal variant="light" size="md" />
+        <div style={{ textAlign: 'right' }}>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 4 }}>Questions? Call us now</p>
+          <a href="tel:+260971000000" style={{ color: 'var(--gold, #C4992A)', fontSize: 22, fontWeight: 700, textDecoration: 'none', letterSpacing: '-0.01em', display: 'block' }}>
+            +260 971 000 000
+          </a>
+          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 3 }}>Mon–Fri 8am–5pm · Sat 9am–1pm</p>
+        </div>
+      </div>
+
+      {/* Four columns */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px 24px 40px', display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: 40 }}>
+        {COLS.map(col => (
+          <div key={col.title}>
+            <h4 style={{ color: 'rgba(255,255,255,0.85)', fontSize: 11.5, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 20, fontFamily: 'Outfit, sans-serif' }}>
+              {col.title}
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
+              {col.links.map(link => (
+                <Link key={link.label} href={link.href}
+                  style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13.5, transition: 'color 0.15s', fontFamily: 'Outfit, sans-serif' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.85)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+                >
+                  {link.label}
+                </Link>
               ))}
             </div>
           </div>
+        ))}
 
-          {/* Link columns */}
-          {COLUMNS.map(col => (
-            <div key={col.title}>
-              <h4 style={{ color: 'rgba(255,255,255,0.9)', fontSize: 12.5, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 18 }}>{col.title}</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
-                {col.links.map(link => (
-                  <Link key={link.href} href={link.href} style={{ color: 'rgba(255,255,255,0.42)', textDecoration: 'none', fontSize: 13.5, fontFamily: 'Outfit, sans-serif', transition: 'color 0.15s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.85)'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.42)'}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
+        {/* Get in touch column */}
+        <div>
+          <h4 style={{ color: 'rgba(255,255,255,0.85)', fontSize: 11.5, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 20 }}>Get in Touch</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <a href="tel:+260971000000" style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--gold, #C4992A)', fontSize: 13.5, textDecoration: 'none', fontWeight: 500 }}>
+              📞 +260 971 000 000
+            </a>
+            <a href="mailto:info@doneandspace.com" style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.5)', fontSize: 13.5, textDecoration: 'none' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.85)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+            >
+              ✉ info@doneandspace.com
+            </a>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.4)', fontSize: 13.5 }}>
+              📍 Lusaka, Zambia
+            </span>
+            <a
+              href="https://wa.me/260971000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#25D366', color: 'white', padding: '9px 16px', borderRadius: 2, fontSize: 13, fontWeight: 600, textDecoration: 'none', marginTop: 8, width: 'fit-content' }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Chat on WhatsApp
+            </a>
+          </div>
         </div>
+      </div>
 
-        {/* Bottom bar */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
-          <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12.5 }}>© {new Date().getFullYear()} Done & Space Properties Ltd. All rights reserved.</p>
-          <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: 12 }}>Licensed Real Estate Agency · Zambia</p>
+      {/* Bottom bar */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 24px', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12 }}>
+          © {new Date().getFullYear()} Done &amp; Space Properties Limited. All rights reserved.
+        </p>
+        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>
+          Licensed Real Estate Agency · Zambia
+        </p>
+        <div style={{ display: 'flex', gap: 16 }}>
+          {['Facebook', 'Instagram', 'LinkedIn'].map(name => (
+            <a key={name} href="#" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, textDecoration: 'none', transition: 'color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.3)'}
+            >
+              {name}
+            </a>
+          ))}
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          footer > div > div:first-child { grid-template-columns: 1fr !important; }
+        @media (max-width: 900px) {
+          footer > div:nth-child(2) { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 600px) {
+          footer > div:nth-child(2) { grid-template-columns: 1fr !important; }
+          footer > div:first-child { flex-direction: column; text-align: left; }
+          footer > div:first-child > div { text-align: left; }
         }
       `}</style>
     </footer>

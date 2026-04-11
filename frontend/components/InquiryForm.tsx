@@ -7,14 +7,18 @@ interface InquiryFormProps {
   propertyTitle?: string;
   interestType?: 'buy' | 'rent' | 'sell' | 'let' | 'invest';
   compact?: boolean;
+  theme?: 'dark' | 'light';
 }
 
-export default function InquiryForm({ propertyId, propertyTitle, interestType = 'buy', compact = false }: InquiryFormProps) {
+export default function InquiryForm({
+  propertyId, propertyTitle, interestType = 'buy', compact = false, theme = 'dark',
+}: InquiryFormProps) {
   const [form, setForm] = useState({ full_name: '', phone: '', email: '', message: '', interest_type: interestType });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
+  const isLight = theme === 'light';
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   const submit = async () => {
@@ -49,20 +53,24 @@ export default function InquiryForm({ propertyId, propertyTitle, interestType = 
     setSubmitting(false);
   };
 
+  const inputBg = isLight ? 'white' : 'rgba(255,255,255,0.04)';
+  const inputBorder = isLight ? '1px solid var(--border, #E8DDD6)' : '1px solid rgba(255,255,255,0.1)';
+  const inputColor = isLight ? 'var(--ink, #0F0A08)' : 'white';
+  const focusBorder = isLight ? '1px solid var(--brand, #7B1D2A)' : '1px solid rgba(123,29,42,0.6)';
+  const labelColor = isLight ? 'var(--ink-muted, #8C7B72)' : 'rgba(255,255,255,0.45)';
+  const btnBg = isLight ? 'var(--brand, #7B1D2A)' : '#8B1A2F';
+  const btnHoverBg = isLight ? 'var(--brand-deep, #5C0A1A)' : '#a01f37';
+
   const inputStyle: any = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    color: 'white',
-    padding: compact ? '9px 12px' : '11px 14px',
-    borderRadius: 9,
-    fontSize: 13.5,
-    outline: 'none',
-    fontFamily: 'Outfit, sans-serif',
-    boxSizing: 'border-box',
-    transition: 'border-color 0.15s',
+    width: '100%', background: inputBg, border: inputBorder, color: inputColor,
+    padding: compact ? '9px 12px' : '11px 14px', borderRadius: isLight ? 2 : 9,
+    fontSize: 13.5, outline: 'none', fontFamily: 'Outfit, sans-serif',
+    boxSizing: 'border-box', transition: 'border-color 0.15s',
   };
-  const labelStyle: any = { display: 'block', color: 'rgba(255,255,255,0.45)', fontSize: 11, fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 6 };
+  const labelStyle: any = {
+    display: 'block', color: labelColor, fontSize: 11, fontWeight: 600,
+    letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 6,
+  };
 
   if (submitted) {
     return (
@@ -70,8 +78,10 @@ export default function InquiryForm({ propertyId, propertyTitle, interestType = 
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
           <CheckCircle size={40} style={{ color: '#22c55e' }} />
         </div>
-        <h3 style={{ color: 'white', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>Inquiry Received!</h3>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13.5, lineHeight: 1.6 }}>
+        <h3 style={{ color: isLight ? 'var(--ink, #0F0A08)' : 'white', fontSize: 17, fontWeight: 700, marginBottom: 8, fontFamily: 'Outfit, sans-serif' }}>
+          Inquiry Received!
+        </h3>
+        <p style={{ color: isLight ? 'var(--ink-muted, #8C7B72)' : 'rgba(255,255,255,0.5)', fontSize: 13.5, lineHeight: 1.6 }}>
           Thank you, {form.full_name.split(' ')[0]}. Our team will contact you within 24 hours.
         </p>
       </div>
@@ -81,7 +91,7 @@ export default function InquiryForm({ propertyId, propertyTitle, interestType = 
   return (
     <div>
       {error && (
-        <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171', padding: '10px 14px', borderRadius: 8, marginBottom: 14, fontSize: 13 }}>
+        <div style={{ background: isLight ? '#fef2f2' : 'rgba(239,68,68,0.1)', border: `1px solid ${isLight ? '#fecaca' : 'rgba(239,68,68,0.2)'}`, color: isLight ? '#dc2626' : '#f87171', padding: '10px 14px', borderRadius: isLight ? 2 : 8, marginBottom: 14, fontSize: 13 }}>
           {error}
         </div>
       )}
@@ -90,8 +100,8 @@ export default function InquiryForm({ propertyId, propertyTitle, interestType = 
         <div>
           <label style={labelStyle}>Full Name *</label>
           <input value={form.full_name} onChange={e => set('full_name', e.target.value)} placeholder="Your full name" style={inputStyle}
-            onFocus={e => e.currentTarget.style.borderColor = 'rgba(139,26,47,0.6)'}
-            onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+            onFocus={e => e.currentTarget.style.border = focusBorder}
+            onBlur={e => e.currentTarget.style.border = inputBorder}
           />
         </div>
 
@@ -99,15 +109,15 @@ export default function InquiryForm({ propertyId, propertyTitle, interestType = 
           <div>
             <label style={labelStyle}>Phone *</label>
             <input value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+260..." style={inputStyle}
-              onFocus={e => e.currentTarget.style.borderColor = 'rgba(139,26,47,0.6)'}
-              onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+              onFocus={e => e.currentTarget.style.border = focusBorder}
+              onBlur={e => e.currentTarget.style.border = inputBorder}
             />
           </div>
           <div>
             <label style={labelStyle}>Email</label>
             <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="your@email.com" style={inputStyle}
-              onFocus={e => e.currentTarget.style.borderColor = 'rgba(139,26,47,0.6)'}
-              onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+              onFocus={e => e.currentTarget.style.border = focusBorder}
+              onBlur={e => e.currentTarget.style.border = inputBorder}
             />
           </div>
         </div>
@@ -128,24 +138,24 @@ export default function InquiryForm({ propertyId, propertyTitle, interestType = 
         <div>
           <label style={labelStyle}>Message</label>
           <textarea value={form.message} onChange={e => set('message', e.target.value)}
-            placeholder={propertyTitle ? `I'm interested in "${propertyTitle}"...` : 'Tell us what you\'re looking for...'}
+            placeholder={propertyTitle ? `I'm interested in "${propertyTitle}"...` : "Tell us what you're looking for..."}
             rows={compact ? 2 : 3}
             style={{ ...inputStyle, resize: 'vertical' }}
-            onFocus={e => e.currentTarget.style.borderColor = 'rgba(139,26,47,0.6)'}
-            onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+            onFocus={e => e.currentTarget.style.border = focusBorder}
+            onBlur={e => e.currentTarget.style.border = inputBorder}
           />
         </div>
 
         <button onClick={submit} disabled={submitting} style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          background: '#8B1A2F', border: 'none', color: 'white',
+          background: btnBg, border: 'none', color: 'white',
           padding: compact ? '10px' : '13px',
-          borderRadius: 9, fontSize: 14, fontWeight: 600, cursor: 'pointer',
+          borderRadius: isLight ? 2 : 9, fontSize: 14, fontWeight: 600, cursor: 'pointer',
           fontFamily: 'Outfit, sans-serif', transition: 'background 0.15s',
-          opacity: submitting ? 0.7 : 1,
+          opacity: submitting ? 0.7 : 1, letterSpacing: '0.03em',
         }}
-          onMouseEnter={e => { if (!submitting) e.currentTarget.style.background = '#a01f37'; }}
-          onMouseLeave={e => e.currentTarget.style.background = '#8B1A2F'}
+          onMouseEnter={e => { if (!submitting) (e.currentTarget as HTMLButtonElement).style.background = btnHoverBg; }}
+          onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = btnBg}
         >
           <Send size={14} /> {submitting ? 'Sending...' : 'Send Inquiry'}
         </button>
