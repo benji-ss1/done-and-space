@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import api from '@/lib/api';
+import { apiFetch } from '@/lib/api';
 import Badge from '@/components/Badge';
 import { Plus, Save, X, Shield } from 'lucide-react';
 
@@ -27,8 +27,8 @@ export default function UsersPage() {
 
   const load = async () => {
     try {
-      const res = await api.get('/users');
-      setUsers(res.data);
+      const res = await apiFetch('/users');
+      setUsers(Array.isArray(res) ? res : (res.data || []));
     } catch {}
     setLoading(false);
   };
@@ -40,19 +40,19 @@ export default function UsersPage() {
     if (!form.full_name || !form.email || !form.password) { setError('Name, email and password are required.'); return; }
     setSaving(true); setError(''); setSuccess('');
     try {
-      await api.post('/users', form);
+      await apiFetch('/users', { method: 'POST', body: JSON.stringify(form) });
       setSuccess('User created successfully.');
       setForm({ full_name: '', email: '', phone: '', password: '', role: 'staff', branch_id: '' });
       setShowForm(false);
       load();
     } catch (e: any) {
-      setError(e.response?.data?.message || 'Failed to create user.');
+      setError(e.message || 'Failed to create user.');
     }
     setSaving(false);
   };
 
   const toggleActive = async (userId: string, current: boolean) => {
-    await api.patch(`/users/${userId}`, { is_active: !current });
+    await apiFetch(`/users/${userId}`, { method: 'PATCH', body: JSON.stringify({ is_active: !current }) });
     load();
   };
 
