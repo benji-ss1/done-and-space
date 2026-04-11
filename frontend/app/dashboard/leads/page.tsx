@@ -18,9 +18,13 @@ export default function LeadsPage() {
 
   const loadLeads = async () => {
     try {
-      const res = await apiFetch('/leads');
-      setLeads(res.data || []);
-    } catch (e) {} finally { setLoading(false); }
+      const result = await apiFetch('/leads');
+      console.log('Leads API response:', result);
+      const list = Array.isArray(result) ? result : (result.data || result.leads || []);
+      setLeads(list);
+    } catch (e) {
+      console.error('Failed to load leads:', e);
+    } finally { setLoading(false); }
   };
 
   const handleSubmit = async () => {
