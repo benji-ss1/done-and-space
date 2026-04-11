@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PropertyCard from '../../components/PropertyCard';
 import { Search, SlidersHorizontal, Building2, X } from 'lucide-react';
@@ -10,7 +10,7 @@ const TYPES = ['all', 'house', 'apartment', 'land', 'commercial', 'office'];
 const LISTING_TYPES = [{ value: 'all', label: 'All' }, { value: 'sale', label: 'For Sale' }, { value: 'let', label: 'For Rent' }];
 const PROVINCES = ['All Provinces', 'Lusaka', 'Copperbelt', 'Central', 'Eastern', 'Western', 'Northern', 'Luapula', 'North-Western', 'Southern', 'Muchinga'];
 
-export default function PropertiesPage() {
+function PropertiesContent() {
   const searchParams = useSearchParams();
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -115,5 +115,17 @@ export default function PropertiesPage() {
         }
       `}</style>
     </main>
+  );
+}
+
+export default function PropertiesPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif', color: 'rgba(255,255,255,0.3)', background: '#0a0608' }}>
+        Loading properties...
+      </div>
+    }>
+      <PropertiesContent />
+    </Suspense>
   );
 }
