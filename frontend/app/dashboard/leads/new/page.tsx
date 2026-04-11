@@ -72,13 +72,29 @@ export default function NewLeadPage() {
           <div>
             <label style={labelStyle}>Lead Source</label>
             <select value={form.source} onChange={e => set('source', e.target.value)} style={inputStyle}>
-              {['website','whatsapp','referral','agent','walk_in','social','facebook','email','other'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s.replace(/_/g,' ')}</option>)}
+              {[
+                { value: 'website',  label: 'Website' },
+                { value: 'whatsapp', label: 'WhatsApp' },
+                { value: 'referral', label: 'Referral' },
+                { value: 'agent',    label: 'Agent' },
+                { value: 'walk_in',  label: 'Walk In' },
+                { value: 'social',   label: 'Social Media' },
+                { value: 'facebook', label: 'Facebook' },
+                { value: 'email',    label: 'Email' },
+                { value: 'other',    label: 'Other' },
+              ].map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
           </div>
           <div>
             <label style={labelStyle}>Interest Type</label>
             <select value={form.interest_type} onChange={e => set('interest_type', e.target.value)} style={inputStyle}>
-              {['buy','rent','sell','let','invest'].map(s => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s}</option>)}
+              {[
+                { value: 'buy',    label: 'Buy' },
+                { value: 'rent',   label: 'Rent' },
+                { value: 'sell',   label: 'Sell' },
+                { value: 'let',    label: 'Let' },
+                { value: 'invest', label: 'Invest' },
+              ].map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
           </div>
           <div>
