@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { leadsAPI } from '@/lib/api';
+import { apiFetch } from '@/lib/api';
 import Badge from '@/components/Badge';
 import { ArrowLeft, Phone, Mail, MessageSquare, Eye, FileText, Save, Plus } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
@@ -21,8 +21,8 @@ export default function LeadDetailPage() {
 
   const load = async () => {
     try {
-      const res = await leadsAPI.getOne(id);
-      setLead(res.data);
+      const res = await apiFetch(`/leads/${id}`);
+      setLead(res);
     } catch {}
     setLoading(false);
   };
@@ -30,7 +30,7 @@ export default function LeadDetailPage() {
 
   const updateStatus = async (status: string) => {
     setSaving(true);
-    await leadsAPI.update(id, { status });
+    await apiFetch(`/leads/${id}`, { method: 'PUT', body: JSON.stringify({ status }) });
     await load();
     setSaving(false);
   };
@@ -38,9 +38,9 @@ export default function LeadDetailPage() {
   const submitLog = async () => {
     if (!logForm.notes.trim()) return;
     setSaving(true);
-    await leadsAPI.interact(id, {
-      ...logForm,
-      next_action_date: logForm.next_action_date || undefined,
+    await apiFetch(`/leads/${id}/interact`, {
+      method: 'POST',
+      body: JSON.stringify({ ...logForm, next_action_date: logForm.next_action_date || undefined }),
     });
     setLogForm({ type: 'call', notes: '', outcome: '', new_status: '', next_action_date: '' });
     setShowLog(false);
@@ -86,7 +86,7 @@ export default function LeadDetailPage() {
                 { label: 'Email', value: lead.email || '—', mono: false },
                 { label: 'Interest', value: lead.interest_type || '—', capitalize: true },
                 { label: 'Budget (ZMW)', value: lead.budget_max ? Number(lead.budget_max).toLocaleString() : '—', mono: true },
-                { label: 'Preferred Location', value: lead.preferred_location || '—' },
+                { label: 'Preferred Location', value: lead.preferred_area || '—' },
                 { label: 'Next Action', value: lead.next_action_date ? new Date(lead.next_action_date).toLocaleDateString() : '—' },
               ].map(f => (
                 <div key={f.label} style={{ background: 'var(--bg-elevated)', borderRadius: 9, padding: '12px 14px' }}>
