@@ -1,3 +1,4 @@
+'use client';
 import InquiryForm from '../../components/InquiryForm';
 import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 

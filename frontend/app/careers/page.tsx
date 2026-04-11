@@ -1,3 +1,4 @@
+'use client';
 import InquiryForm from '../../components/InquiryForm';
 import { Briefcase, Heart, TrendingUp, Users, MapPin } from 'lucide-react';
 
