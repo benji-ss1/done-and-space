@@ -63,7 +63,7 @@ export default function NewLeadPage() {
           </div>
           <div>
             <label style={labelStyle}>Phone Number *</label>
-            <input value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+260971000000" style={inputStyle} />
+            <input required value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+260971000000" style={inputStyle} />
           </div>
           <div>
             <label style={labelStyle}>Email Address</label>
