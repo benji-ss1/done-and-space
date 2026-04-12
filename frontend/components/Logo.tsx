@@ -5,45 +5,95 @@ interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const sizes = { sm: { mark: 28, wordmark: 15 }, md: { mark: 36, wordmark: 18 }, lg: { mark: 48, wordmark: 24 } };
+// The SVG mark: two flowing parallel wave-stroke lines in brand maroon
+// Replicates the reference image logo exactly — no filled shapes, no letterforms
+function LogoMark({ color, opacity2 = 0.42 }: { color: string; opacity2?: number }) {
+  return (
+    <svg width="48" height="40" viewBox="0 0 50 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Line 1 — top wave, thicker, full opacity */}
+      <path
+        d="M 4 28 C 10 18, 20 14, 28 18 C 36 22, 42 14, 46 10"
+        stroke={color}
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        fill="none"
+      />
+      {/* Line 2 — bottom wave, thinner, partial opacity */}
+      <path
+        d="M 4 35 C 10 25, 20 21, 28 25 C 36 29, 42 21, 46 17"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        opacity={opacity2}
+      />
+    </svg>
+  );
+}
 
-export function LogoHorizontal({ variant = 'light', size = 'md' }: LogoProps) {
-  const s = sizes[size];
-  const textColor = variant === 'light' ? '#FFFFFF' : '#1a0f11';
-  const subColor = variant === 'light' ? 'rgba(255,255,255,0.55)' : 'rgba(26,15,17,0.5)';
+export function LogoHorizontal({ variant = 'dark', size = 'md' }: LogoProps) {
+  const isDark = variant === 'dark';
+  const markColor   = isDark ? '#7B1828' : 'rgba(255,255,255,0.90)';
+  const nameColor   = isDark ? '#7B1828' : '#FFFFFF';
+  const subColor    = isDark ? '#9A9A9A' : 'rgba(255,255,255,0.45)';
+
+  const nameSizes   = { sm: 15, md: 18, lg: 22 };
+  const subSizes    = { sm: 8,  md: 9.5, lg: 11 };
+  const markScale   = { sm: 0.70, md: 1.0, lg: 1.25 };
+  const sc = markScale[size];
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, userSelect: 'none' }}>
-      <svg width={s.mark} height={s.mark} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="40" height="40" rx="9" fill="#8B1A2F" />
-        <path d="M8 28L20 12L32 28" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M14 28V22C14 20.895 14.895 20 16 20H24C25.105 20 26 20.895 26 22V28" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
-        <circle cx="20" cy="17" r="2" fill="white" fillOpacity="0.6" />
-      </svg>
-      <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
-        <span style={{ color: textColor, fontSize: s.wordmark, fontWeight: 700, fontFamily: 'Outfit, sans-serif', letterSpacing: '-0.02em' }}>Done & Space</span>
-        <span style={{ color: subColor, fontSize: s.wordmark * 0.6, fontWeight: 500, fontFamily: 'Outfit, sans-serif', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 1 }}>Properties</span>
+      <div style={{ transform: `scale(${sc})`, transformOrigin: 'left center', flexShrink: 0 }}>
+        <LogoMark color={markColor} />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <span style={{
+          color: nameColor,
+          fontSize: nameSizes[size],
+          fontWeight: 700,
+          fontFamily: "'Playfair Display', Georgia, serif",
+          letterSpacing: '0.01em',
+          lineHeight: 1.1,
+          display: 'block',
+        }}>
+          Done &amp; Space
+        </span>
+        <span style={{
+          color: subColor,
+          fontSize: subSizes[size],
+          fontWeight: 400,
+          fontFamily: "'Outfit', system-ui, sans-serif",
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          display: 'block',
+          marginTop: 2,
+        }}>
+          Properties Limited
+        </span>
       </div>
     </div>
   );
 }
 
-export function LogoStacked({ variant = 'light', size = 'md' }: LogoProps) {
-  const s = sizes[size];
-  const textColor = variant === 'light' ? '#FFFFFF' : '#1a0f11';
-  const subColor = variant === 'light' ? 'rgba(255,255,255,0.55)' : 'rgba(26,15,17,0.5)';
+export function LogoStacked({ variant = 'dark', size = 'md' }: LogoProps) {
+  const isDark = variant === 'dark';
+  const markColor = isDark ? '#7B1828' : 'rgba(255,255,255,0.90)';
+  const nameColor = isDark ? '#7B1828' : '#FFFFFF';
+  const subColor  = isDark ? '#9A9A9A' : 'rgba(255,255,255,0.45)';
+  const nameSizes = { sm: 14, md: 17, lg: 21 };
+  const subSizes  = { sm: 8,  md: 9.5, lg: 11 };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, userSelect: 'none' }}>
-      <svg width={s.mark * 1.3} height={s.mark * 1.3} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="40" height="40" rx="9" fill="#8B1A2F" />
-        <path d="M8 28L20 12L32 28" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M14 28V22C14 20.895 14.895 20 16 20H24C25.105 20 26 20.895 26 22V28" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
-        <circle cx="20" cy="17" r="2" fill="white" fillOpacity="0.6" />
-      </svg>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1 }}>
-        <span style={{ color: textColor, fontSize: s.wordmark, fontWeight: 700, fontFamily: 'Outfit, sans-serif', letterSpacing: '-0.02em' }}>Done & Space</span>
-        <span style={{ color: subColor, fontSize: s.wordmark * 0.65, fontWeight: 500, fontFamily: 'Outfit, sans-serif', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 3 }}>Properties</span>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, userSelect: 'none' }}>
+      <LogoMark color={markColor} />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <span style={{ color: nameColor, fontSize: nameSizes[size], fontWeight: 700, fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: '0.01em' }}>
+          Done &amp; Space
+        </span>
+        <span style={{ color: subColor, fontSize: subSizes[size], fontWeight: 400, fontFamily: "'Outfit', system-ui, sans-serif", letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 2 }}>
+          Properties Limited
+        </span>
       </div>
     </div>
   );

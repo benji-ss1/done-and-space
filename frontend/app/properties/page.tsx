@@ -1,151 +1,274 @@
 'use client';
-import { Suspense, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState, useCallback } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import PropertyCard from '../../components/PropertyCard';
-import { Search, SlidersHorizontal, Building2, X } from 'lucide-react';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'https://done-space-backend-production.up.railway.app/api/v1';
 
-const TYPES = ['all', 'house', 'apartment', 'land', 'commercial', 'office'];
-const LISTING_TYPES = [{ value: 'all', label: 'All' }, { value: 'sale', label: 'For Sale' }, { value: 'let', label: 'For Rent' }];
-const PROVINCES = ['All Provinces', 'Lusaka', 'Copperbelt', 'Central', 'Eastern', 'Western', 'Northern', 'Luapula', 'North-Western', 'Southern', 'Muchinga'];
+const PROP_TYPES = ['HOUSE', 'APARTMENT', 'OFFICE', 'COMMERCIAL', 'LAND'];
+const BEDROOM_OPTIONS = ['Studio', '1', '2', '3', '4+'];
+const AMENITIES = ['Pool', 'Gym', 'Parking', 'Balcony', 'Garden', 'Boardroom', 'Generator', 'Security System', 'Borehole', 'Solar Panels'];
+
+const selStyle: React.CSSProperties = {
+  border: '1.5px solid var(--border, #E0D9CE)', borderRadius: 4, padding: '10px 14px',
+  fontSize: 14, outline: 'none', fontFamily: "'Outfit', sans-serif",
+  color: 'var(--ink, #1A1A1A)', background: 'white', width: '100%', boxSizing: 'border-box' as const, cursor: 'pointer',
+};
+const inpStyle: React.CSSProperties = { ...selStyle, cursor: 'text' };
+const lblStyle: React.CSSProperties = {
+  display: 'block', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.10em',
+  textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', marginBottom: 5,
+  fontFamily: "'Outfit', sans-serif",
+};
 
 function PropertiesContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [listingType, setListingType] = useState(searchParams.get('type') || 'all');
-  const [propType, setPropType] = useState('all');
-  const [province, setProvince] = useState('All Provinces');
-  const [search, setSearch] = useState(searchParams.get('q') || '');
-  const [showFilters, setShowFilters] = useState(false);
+
+  // Header search state
+  const [listingType, setListingType] = useState<'sale' | 'let'>(
+    (searchParams.get('listing_type') as 'sale' | 'let') || 'sale'
+  );
+  const [location, setLocation] = useState(searchParams.get('q') || '');
+  const [propTypeFilter, setPropTypeFilter] = useState(searchParams.get('property_type') || '');
+  const [priceRange, setPriceRange] = useState('Any Price');
+
+  // Sidebar state
+  const [selectedBeds, setSelectedBeds] = useState<string[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [statusFilter, setStatusFilter] = useState(true); // active
   const [sortBy, setSortBy] = useState('newest');
 
-  useEffect(() => {
+  const toggleSet = <T,>(arr: T[], val: T): T[] =>
+    arr.includes(val) ? arr.filter(x => x !== val) : [...arr, val];
+
+  const fetch_ = useCallback(() => {
     setLoading(true);
     const params = new URLSearchParams({ status: 'published', limit: '50' });
-    if (listingType !== 'all') params.set('listing_type', listingType);
-    if (propType !== 'all') params.set('property_type', propType);
+    if (listingType !== 'sale') params.set('listing_type', listingType);
+    if (propTypeFilter) params.set('property_type', propTypeFilter);
 
     fetch(`${API}/properties?${params}`)
       .then(r => r.json())
       .then(data => {
         let list = Array.isArray(data) ? data : (data.data || data.properties || []);
-        if (province !== 'All Provinces') list = list.filter((p: any) => p.province === province || p.city === province || p.location?.includes(province));
-        if (search.trim()) {
-          const q = search.toLowerCase();
-          list = list.filter((p: any) => p.title?.toLowerCase().includes(q) || p.location?.toLowerCase().includes(q) || p.city?.toLowerCase().includes(q));
+        // client-side location filter
+        if (location.trim()) {
+          const q = location.toLowerCase();
+          list = list.filter((p: any) =>
+            p.title?.toLowerCase().includes(q) ||
+            p.location?.toLowerCase().includes(q) ||
+            p.city?.toLowerCase().includes(q) ||
+            p.province?.toLowerCase().includes(q)
+          );
         }
+        // bedroom filter
+        if (selectedBeds.length > 0) {
+          list = list.filter((p: any) => {
+            if (!p.bedrooms && p.bedrooms !== 0) return false;
+            return selectedBeds.some(b => {
+              if (b === 'Studio') return p.bedrooms === 0;
+              if (b === '4+') return p.bedrooms >= 4;
+              return p.bedrooms === parseInt(b);
+            });
+          });
+        }
+        // type filter
+        if (selectedTypes.length > 0) {
+          list = list.filter((p: any) => selectedTypes.map(t => t.toLowerCase()).includes(p.property_type?.toLowerCase()));
+        }
+        // sort
+        if (sortBy === 'price_asc') list.sort((a: any, b: any) => (a.price || 0) - (b.price || 0));
+        else if (sortBy === 'price_desc') list.sort((a: any, b: any) => (b.price || 0) - (a.price || 0));
+        else list.sort((a: any, b: any) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+
         setProperties(list);
       })
       .catch(() => setProperties([]))
       .finally(() => setLoading(false));
-  }, [listingType, propType, province]);
+  }, [listingType, propTypeFilter, location, selectedBeds, selectedTypes, sortBy]);
 
-  const baseFiltered = search.trim()
-    ? properties.filter(p => {
-        const q = search.toLowerCase();
-        return p.title?.toLowerCase().includes(q) || p.location?.toLowerCase().includes(q) || p.city?.toLowerCase().includes(q);
-      })
-    : properties;
+  useEffect(() => { fetch_(); }, [fetch_]);
 
-  const filtered = [...baseFiltered].sort((a, b) => {
-    if (sortBy === 'price_asc') return (a.price || 0) - (b.price || 0);
-    if (sortBy === 'price_desc') return (b.price || 0) - (a.price || 0);
-    return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+  const doSearch = () => { fetch_(); };
+
+  const sidebarHdg: React.CSSProperties = {
+    fontFamily: "'Outfit', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: '0.10em',
+    textTransform: 'uppercase', color: 'var(--ink-muted, #6B6B6B)', marginBottom: 12, marginTop: 20,
+  };
+  const pillBtn = (active: boolean): React.CSSProperties => ({
+    padding: '5px 12px', border: `1.5px solid ${active ? 'var(--brand, #7B1828)' : 'var(--border, #E0D9CE)'}`,
+    borderRadius: 4, fontSize: 13, background: active ? 'var(--brand, #7B1828)' : 'transparent',
+    color: active ? 'white' : 'var(--ink-muted, #6B6B6B)', cursor: 'pointer',
+    fontFamily: "'Outfit', sans-serif", transition: 'all 0.15s',
   });
 
-  const selStyle: any = { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '9px 12px', borderRadius: 9, fontSize: 13, outline: 'none', fontFamily: 'Outfit, sans-serif', cursor: 'pointer' };
-
   return (
-    <main style={{ background: '#0a0608', minHeight: '100vh', paddingTop: 68 }}>
-      {/* Header */}
-      <div style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '40px 24px 32px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <p style={{ color: '#8B1A2F', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Properties</p>
-          <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, letterSpacing: '-0.025em', marginBottom: 8 }}>All Properties</h1>
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14 }}>{loading ? 'Loading...' : `${filtered.length} ${filtered.length === 1 ? 'property' : 'properties'} found — all listings verified before publication`}</p>
+    <main style={{ background: 'var(--cream, #F5F0E8)', paddingTop: 72 }}>
+
+      {/* ─── SEARCH HEADER ─── */}
+      <div style={{ background: 'var(--brand, #7B1828)', padding: '24px 40px' }}>
+        {/* Sale/Let toggle */}
+        <div style={{ display: 'flex', gap: 0, marginBottom: 20, maxWidth: 380, background: 'rgba(0,0,0,0.25)', borderRadius: 4, padding: 4 }}>
+          {(['sale', 'let'] as const).map(t => (
+            <button key={t} onClick={() => setListingType(t)} style={{
+              flex: 1, padding: '10px 20px', border: 'none', borderRadius: 3,
+              fontFamily: "'Outfit', sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
+              background: listingType === t ? 'white' : 'transparent',
+              color: listingType === t ? 'var(--brand, #7B1828)' : 'rgba(255,255,255,0.65)',
+            }}>
+              {t === 'sale' ? 'Search For Sale' : 'Search To Let'}
+            </button>
+          ))}
+        </div>
+
+        {/* Search fields */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end' }}>
+          <div style={{ flex: '1 1 200px', minWidth: 160 }}>
+            <label style={lblStyle}>Location</label>
+            <input value={location} onChange={e => setLocation(e.target.value)} onKeyDown={e => e.key === 'Enter' && doSearch()} placeholder="City, area or region..." style={{ ...inpStyle, background: 'rgba(255,255,255,0.95)' }} />
+          </div>
+          <div style={{ flex: '1 1 160px', minWidth: 140 }}>
+            <label style={lblStyle}>Property Type</label>
+            <select value={propTypeFilter} onChange={e => setPropTypeFilter(e.target.value)} style={{ ...selStyle, background: 'rgba(255,255,255,0.95)' }}>
+              <option value="">Any Type</option>
+              {PROP_TYPES.map(t => <option key={t} value={t.toLowerCase()}>{t.charAt(0) + t.slice(1).toLowerCase()}</option>)}
+            </select>
+          </div>
+          <div style={{ flex: '1 1 160px', minWidth: 140 }}>
+            <label style={lblStyle}>Price Range</label>
+            <select value={priceRange} onChange={e => setPriceRange(e.target.value)} style={{ ...selStyle, background: 'rgba(255,255,255,0.95)' }}>
+              {['Any Price', 'Up to ZMW 500K', 'ZMW 500K–2M', 'ZMW 2M–5M', 'ZMW 5M–10M', 'ZMW 10M+'].map(r => <option key={r}>{r}</option>)}
+            </select>
+          </div>
+          <button onClick={doSearch} style={{ padding: '11px 32px', background: 'var(--ink, #1A1A1A)', color: 'white', border: 'none', borderRadius: 4, fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: "'Outfit', sans-serif", alignSelf: 'flex-end', flexShrink: 0 }}>
+            Search
+          </button>
+        </div>
+
+        {/* Extra filters */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, marginTop: 14, alignItems: 'center' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.70)', fontSize: 13, fontFamily: "'Outfit', sans-serif", cursor: 'pointer' }}>
+            <div style={{ width: 36, height: 20, background: statusFilter ? 'var(--gold, #C9A84C)' : 'rgba(255,255,255,0.2)', borderRadius: 10, position: 'relative', transition: 'background 0.2s', cursor: 'pointer', flexShrink: 0 }} onClick={() => setStatusFilter(v => !v)}>
+              <div style={{ width: 14, height: 14, background: 'white', borderRadius: '50%', position: 'absolute', top: 3, left: statusFilter ? 19 : 3, transition: 'left 0.2s' }} />
+            </div>
+            Active, Under Offer
+          </label>
+          <select value={sortBy} onChange={e => setSortBy(e.target.value)} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.70)', fontSize: 13, fontFamily: "'Outfit', sans-serif", cursor: 'pointer', outline: 'none' }}>
+            <option value="newest" style={{ color: '#1A1A1A' }}>Sort: Newest</option>
+            <option value="price_asc" style={{ color: '#1A1A1A' }}>Sort: Price ↑</option>
+            <option value="price_desc" style={{ color: '#1A1A1A' }}>Sort: Price ↓</option>
+          </select>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
-        {/* Filters */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 32, flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 9, padding: '0 14px' }}>
-            <Search size={15} style={{ color: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search properties..." style={{ flex: 1, background: 'none', border: 'none', color: 'white', fontSize: 13.5, outline: 'none', padding: '10px 0', fontFamily: 'Outfit, sans-serif' }} />
-            {search && <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer' }}><X size={14} /></button>}
+      {/* ─── MAIN LAYOUT: sidebar + results ─── */}
+      <div style={{ maxWidth: 1340, margin: '0 auto', display: 'flex', gap: 24, padding: '24px 24px 80px', alignItems: 'flex-start' }}>
+
+        {/* SIDEBAR */}
+        <aside style={{ width: 220, flexShrink: 0, background: 'white', border: '1px solid var(--border, #E0D9CE)', borderRadius: 4, padding: '20px', position: 'sticky', top: 90, maxHeight: 'calc(100vh - 110px)', overflowY: 'auto' }}>
+
+          {/* Price Range */}
+          <div style={{ ...sidebarHdg, marginTop: 0 }}>Price Range</div>
+          <div style={{ fontSize: 12, color: 'var(--brand, #7B1828)', fontWeight: 600, marginBottom: 8, fontFamily: "'Outfit', sans-serif", textAlign: 'center' }}>ZMW 500K – ZMW 10M+</div>
+          <input type="range" min={500000} max={10000000} step={100000} style={{ width: '100%', accentColor: 'var(--brand, #7B1828)' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--ink-muted, #6B6B6B)', fontFamily: "'Outfit', sans-serif", marginTop: 4 }}>
+            <span>ZMW 500K</span><span>ZMW 10M+</span>
           </div>
 
-          <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 9, padding: 4 }}>
-            {LISTING_TYPES.map(t => (
-              <button key={t.value} onClick={() => setListingType(t.value)} style={{
-                padding: '7px 14px', borderRadius: 7, border: 'none', fontSize: 13,
-                background: listingType === t.value ? '#8B1A2F' : 'transparent',
-                color: listingType === t.value ? 'white' : 'rgba(255,255,255,0.5)',
-                cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontWeight: listingType === t.value ? 600 : 400,
-              }}>{t.label}</button>
+          {/* Bedrooms */}
+          <div style={sidebarHdg}>Bedrooms</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {BEDROOM_OPTIONS.map(b => (
+              <button key={b} onClick={() => setSelectedBeds(prev => toggleSet(prev, b))} style={pillBtn(selectedBeds.includes(b))}>{b}</button>
             ))}
           </div>
 
-          <select value={propType} onChange={e => setPropType(e.target.value)} style={selStyle}>
-            {TYPES.map(t => <option key={t} value={t}>{t === 'all' ? 'All Types' : t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
-          </select>
+          {/* Property Type */}
+          <div style={sidebarHdg}>Property Type</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {PROP_TYPES.map(t => (
+              <label key={t} className="amenity-check" style={{ color: 'var(--ink-muted, #6B6B6B)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontFamily: "'Outfit', sans-serif" }}>
+                <input type="checkbox" checked={selectedTypes.includes(t)} onChange={() => setSelectedTypes(prev => toggleSet(prev, t))} style={{ accentColor: 'var(--brand, #7B1828)', width: 14, height: 14, cursor: 'pointer' }} />
+                {t.charAt(0) + t.slice(1).toLowerCase()}
+              </label>
+            ))}
+          </div>
 
-          <select value={province} onChange={e => setProvince(e.target.value)} style={selStyle}>
-            {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
-          </select>
-
-          <select value={sortBy} onChange={e => setSortBy(e.target.value)} style={selStyle}>
-            <option value="newest">Newest First</option>
-            <option value="price_asc">Price: Low–High</option>
-            <option value="price_desc">Price: High–Low</option>
-          </select>
-        </div>
-
-        {/* Grid */}
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '80px 0', color: 'rgba(255,255,255,0.3)' }}>Loading properties...</div>
-        ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <Building2 size={48} style={{ color: 'rgba(255,255,255,0.1)', margin: '0 auto 16px', display: 'block' }} />
-            <h3 style={{ color: 'white', fontSize: 18, fontWeight: 600, marginBottom: 10, fontFamily: 'Outfit, sans-serif' }}>No properties found</h3>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, maxWidth: 480, margin: '0 auto 20px', lineHeight: 1.65 }}>
-              We may have properties not yet listed publicly. Contact our team directly — we often match clients before listings go live.
-            </p>
-            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button onClick={() => { setSearch(''); setListingType('all'); setPropType('all'); setProvince('All Provinces'); }} style={{ background: 'none', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)', padding: '9px 18px', borderRadius: 8, fontSize: 13, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>Clear Filters</button>
-              <a href="/contact" style={{ background: '#8B1A2F', color: 'white', padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, textDecoration: 'none', fontFamily: 'Outfit, sans-serif' }}>Contact Our Team</a>
-              <a href="https://wa.me/260971000000" target="_blank" rel="noopener noreferrer" style={{ background: '#25D366', color: 'white', padding: '9px 18px', borderRadius: 8, fontSize: 13, fontWeight: 600, textDecoration: 'none', fontFamily: 'Outfit, sans-serif' }}>WhatsApp Us</a>
+          {/* Status */}
+          <div style={sidebarHdg}>Status</div>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: 'var(--ink-muted, #6B6B6B)', fontFamily: "'Outfit', sans-serif" }}>
+            <div style={{ width: 34, height: 18, background: statusFilter ? 'var(--brand, #7B1828)' : 'var(--border, #E0D9CE)', borderRadius: 9, position: 'relative', transition: 'background 0.2s', cursor: 'pointer', flexShrink: 0 }} onClick={() => setStatusFilter(v => !v)}>
+              <div style={{ width: 12, height: 12, background: 'white', borderRadius: '50%', position: 'absolute', top: 3, left: statusFilter ? 19 : 3, transition: 'left 0.2s' }} />
             </div>
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 22 }}>
-            {filtered.map(p => <PropertyCard key={p.id} property={p} />)}
-          </div>
-        )}
+            Active, Under Offer
+          </label>
 
-        {/* Bottom CTA */}
-        {!loading && (
-          <div style={{ background: 'var(--cream, #F8F3ED)', border: '1px solid rgba(255,255,255,0.08)', marginTop: 56, padding: '48px', textAlign: 'center', borderRadius: 4 }}>
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12, fontFamily: 'Outfit, sans-serif' }}>Can&apos;t Find What You&apos;re Looking For?</p>
-            <h3 style={{ color: 'white', fontFamily: 'Outfit, sans-serif', fontSize: 18, fontWeight: 600, marginBottom: 10 }}>Tell us what you need</h3>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, maxWidth: 440, margin: '0 auto 24px', lineHeight: 1.65 }}>
-              We will search our full database — including unlisted properties — to find what you are looking for.
-            </p>
-            <a href="/buy" style={{ display: 'inline-block', background: '#8B1A2F', color: 'white', padding: '12px 24px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none', fontFamily: 'Outfit, sans-serif' }}>
-              Submit a Property Request
-            </a>
+          {/* Amenities */}
+          <div style={sidebarHdg}>Amenities</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {AMENITIES.map(a => (
+              <label key={a} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: 'var(--ink-muted, #6B6B6B)', fontFamily: "'Outfit', sans-serif" }}>
+                <input type="checkbox" checked={selectedAmenities.includes(a)} onChange={() => setSelectedAmenities(prev => toggleSet(prev, a))} style={{ accentColor: 'var(--brand, #7B1828)', width: 14, height: 14, cursor: 'pointer' }} />
+                {a}
+              </label>
+            ))}
           </div>
-        )}
+
+          {/* Reset */}
+          {(selectedBeds.length + selectedTypes.length + selectedAmenities.length > 0) && (
+            <button onClick={() => { setSelectedBeds([]); setSelectedTypes([]); setSelectedAmenities([]); }}
+              style={{ marginTop: 16, width: '100%', padding: '8px', background: 'none', border: '1.5px solid var(--border, #E0D9CE)', borderRadius: 4, fontSize: 13, color: 'var(--ink-muted, #6B6B6B)', cursor: 'pointer', fontFamily: "'Outfit', sans-serif" }}>
+              Clear Filters
+            </button>
+          )}
+        </aside>
+
+        {/* RESULTS */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 14, color: 'var(--ink-muted, #6B6B6B)', marginBottom: 20 }}>
+            {loading ? 'Loading...' : `Showing ${properties.length} verified ${properties.length === 1 ? 'listing' : 'listings'} in Zambia.`}
+          </p>
+
+          {loading ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+              {[1,2,3,4,5,6].map(i => (
+                <div key={i} style={{ background: 'white', borderRadius: 4, height: 340, animation: 'pulse 1.5s ease-in-out infinite', border: '1px solid var(--border, #E0D9CE)' }} />
+              ))}
+            </div>
+          ) : properties.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '80px 24px', background: 'white', borderRadius: 4, border: '1px solid var(--border, #E0D9CE)' }}>
+              <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 22, fontWeight: 600, color: 'var(--ink, #1A1A1A)', marginBottom: 10 }}>No properties found</h3>
+              <p style={{ color: 'var(--ink-muted, #6B6B6B)', fontSize: 14, maxWidth: 400, margin: '0 auto 24px', lineHeight: 1.65, fontFamily: "'Outfit', sans-serif" }}>
+                We may have properties not yet listed publicly. Contact our team — we often match clients before listings go live.
+              </p>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+                <button onClick={() => { setSelectedBeds([]); setSelectedTypes([]); setSelectedAmenities([]); setLocation(''); }} style={{ background: 'none', border: '1.5px solid var(--border, #E0D9CE)', color: 'var(--ink-muted, #6B6B6B)', padding: '9px 18px', borderRadius: 4, fontSize: 13, cursor: 'pointer', fontFamily: "'Outfit', sans-serif" }}>Clear Filters</button>
+                <a href="/contact" style={{ background: 'var(--brand, #7B1828)', color: 'white', padding: '9px 18px', borderRadius: 4, fontSize: 13, fontWeight: 600, textDecoration: 'none', fontFamily: "'Outfit', sans-serif" }}>Contact Our Team</a>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+              {properties.map(p => <PropertyCard key={p.id} property={p} />)}
+            </div>
+          )}
+        </div>
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
-          main > div:last-child > div:last-child { grid-template-columns: repeat(2, 1fr) !important; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        @media (max-width: 1100px) {
+          main > div[style*="flex"] > div[style*="grid-template-columns: 'repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 820px) {
+          main > div[style*="display: 'flex'"] { flex-direction: column !important; }
+          aside { position: static !important; width: 100% !important; max-height: none !important; }
         }
         @media (max-width: 600px) {
-          main > div:last-child > div:last-child { grid-template-columns: 1fr !important; }
+          main > div > div > div[style*="repeat(3"] { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </main>
@@ -155,7 +278,7 @@ function PropertiesContent() {
 export default function PropertiesPage() {
   return (
     <Suspense fallback={
-      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif', color: 'rgba(255,255,255,0.3)', background: '#0a0608' }}>
+      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Outfit', sans-serif", color: 'var(--ink-muted, #6B6B6B)', background: 'var(--cream, #F5F0E8)' }}>
         Loading properties...
       </div>
     }>

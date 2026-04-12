@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,10 +15,10 @@
   --text-primary: #f5f0f1;
   --text-secondary: #9a8d90;
   --text-muted: #5a4d50;
-  --accent: #8B1A2F;
-  --accent-hover: #a01f37;
-  --accent-light: #8B1A2F18;
-  --accent-mid: #8B1A2F35;
+  --accent: #7B1828;
+  --accent-hover: #9B2035;
+  --accent-light: #7B182818;
+  --accent-mid: #7B182835;
   --green: #22c55e;
   --green-dim: #22c55e20;
   --blue: #3b82f6;
@@ -31,31 +32,34 @@
 }
 
 /* ─── PUBLIC SITE LUXURY PALETTE ─── */
-/* Scoped under .public-site to avoid any dashboard variable conflicts */
 .public-site {
-  --brand: #7B1D2A;
-  --brand-deep: #5C0A1A;
-  --brand-mid: #9B2D3A;
-  --brand-light: #F2E8EA;
-  --brand-ultra-light: #FBF5F6;
-  --gold: #C4992A;
-  --gold-light: #E8B84B;
-  --gold-pale: #FBF5E6;
-  --cream: #F8F3ED;
-  --white: #FFFFFF;
-  --ink: #0F0A08;
-  --ink-deep: #1A0F0D;
-  --ink-secondary: #4A3830;
-  --ink-muted: #8C7B72;
-  --ink-faint: #C4B8B0;
-  --border: #E8DDD6;
+  --brand:        #7B1828;
+  --brand-dark:   #5C1220;
+  --brand-light:  #9B2035;
+  --cream:        #F5F0E8;
+  --cream-dark:   #EDE8DC;
+  --ink:          #1A1A1A;
+  --ink-muted:    #6B6B6B;
+  --ink-light:    #9A9A9A;
+  --white:        #FFFFFF;
+  --border:       #E0D9CE;
   --border-strong: #C4B8B0;
-  --surface: #FFFFFF;
-  --surface-warm: #FAF7F4;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Outfit', sans-serif;
-  --shadow-card: 0 2px 16px rgba(15,10,8,0.08);
-  --shadow-hover: 0 12px 40px rgba(15,10,8,0.16);
+  --gold:         #C9A84C;
+  --gold-light:   #E8C870;
+  --gold-pale:    #FBF6EC;
+  --surface:      #FFFFFF;
+  --surface-warm: #FAF7F2;
+  --brand-ultra-light: #FBF5F6;
+  --brand-mid:    #9B2D3A;
+  --ink-deep:     #1A0F0D;
+  --ink-secondary: #4A3830;
+  --ink-faint:    #C4B8B0;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Outfit', system-ui, sans-serif;
+  --shadow-card:  0 2px 16px rgba(123,24,40,0.08);
+  --shadow-hover: 0 12px 40px rgba(123,24,40,0.16);
+  --shadow-lg:    0 24px 64px rgba(0,0,0,0.22);
+  --radius:       4px;
 }
 
 /* ─── BASE RESET ─── */
@@ -63,9 +67,13 @@
 body { background: var(--bg-base); color: var(--text-primary); font-family: 'Outfit', sans-serif; }
 
 /* Public site body overrides */
-body.public-site { background: var(--cream); color: var(--ink); font-family: var(--font-body); }
+body.public-site { background: var(--cream, #F5F0E8); color: var(--ink, #1A1A1A); font-family: var(--font-body); }
 .public-site h1, .public-site h2, .public-site h3, .public-site h4 { font-family: var(--font-display); }
 .public-site a { color: inherit; text-decoration: none; }
+.public-site p, .public-site span, .public-site label,
+.public-site input, .public-site select, .public-site textarea, .public-site button {
+  font-family: var(--font-body);
+}
 
 /* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar { width: 4px; }
@@ -74,11 +82,11 @@ body.public-site { background: var(--cream); color: var(--ink); font-family: var
 
 /* ─── PUBLIC UTILITY BUTTONS ─── */
 .btn-primary {
-  background: var(--brand);
+  background: var(--brand, #7B1828);
   color: white;
   border: none;
-  padding: 14px 28px;
-  border-radius: 2px;
+  padding: 13px 28px;
+  border-radius: var(--radius, 4px);
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
@@ -89,21 +97,21 @@ body.public-site { background: var(--cream); color: var(--ink); font-family: var
   align-items: center;
   gap: 8px;
 }
-.btn-primary:hover { background: var(--brand-deep); }
+.btn-primary:hover { background: var(--brand-dark, #5C1220); }
 
 .btn-gold {
-  background: var(--gold);
-  color: var(--ink);
+  background: var(--gold, #C9A84C);
+  color: var(--ink, #1A1A1A);
   border: none;
-  padding: 14px 28px;
-  border-radius: 2px;
+  padding: 13px 28px;
+  border-radius: var(--radius, 4px);
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
 }
-.btn-gold:hover { background: var(--gold-light); }
+.btn-gold:hover { background: var(--gold-light, #E8C870); }
 
 .section-label {
   font-family: var(--font-body);
@@ -111,7 +119,7 @@ body.public-site { background: var(--cream); color: var(--ink); font-family: var
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--brand, #7B1828);
   margin-bottom: 12px;
   display: block;
 }
@@ -174,4 +182,42 @@ input, select, textarea { font-family: var(--font-body); }
 @media (max-width: 768px) {
   .section-padding { padding: 60px 0; }
   .container { padding: 0 20px; }
+}
+
+/* ─── PROPERTY DETAIL TABS ─── */
+.prop-tab {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-muted, #6B6B6B);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.prop-tab.active {
+  color: var(--brand, #7B1828);
+  border-bottom-color: var(--brand, #7B1828);
+  font-weight: 600;
+}
+.prop-tab:hover { color: var(--brand, #7B1828); }
+
+/* ─── SIDEBAR FILTER AMENITY CHECKBOX ─── */
+.amenity-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink-muted, #6B6B6B);
+  padding: 3px 0;
+}
+.amenity-check input[type="checkbox"] {
+  accent-color: var(--brand, #7B1828);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
 }
