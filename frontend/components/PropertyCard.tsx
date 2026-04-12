@@ -1,4 +1,7 @@
-import Link from 'next/link';
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import BookingModal from './BookingModal';
 
 interface PropertyCardProps {
   property: {
@@ -18,6 +21,7 @@ interface PropertyCardProps {
     status?: string;
     furnished?: boolean;
     reference?: string;
+    reference_no?: string;
   };
 }
 
@@ -34,11 +38,14 @@ function formatPrice(price: number) {
 }
 
 export default function PropertyCard({ property: p }: PropertyCardProps) {
+  const router = useRouter();
+  const [bookingOpen, setBookingOpen] = useState(false);
   const image = p.images?.[0];
   const isLet = p.listing_type === 'let';
+  const ref = p.reference_no || p.reference;
 
   return (
-    <Link href={`/properties/${p.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+    <>
       <div
         style={{
           background: 'white',
@@ -47,7 +54,10 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
           overflow: 'hidden',
           transition: 'all 0.3s ease',
           cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
         }}
+        onClick={() => router.push(`/properties/${p.id}`)}
         onMouseEnter={e => {
           (e.currentTarget as HTMLDivElement).style.boxShadow = 'var(--shadow-hover, 0 12px 40px rgba(15,10,8,0.16))';
           (e.currentTarget as HTMLDivElement).style.borderColor = 'transparent';
@@ -60,7 +70,7 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
         }}
       >
         {/* Image */}
-        <div style={{ position: 'relative', height: 220, overflow: 'hidden', background: 'linear-gradient(135deg, var(--brand-light, #F2E8EA) 0%, var(--cream, #F8F3ED) 100%)' }}>
+        <div style={{ position: 'relative', height: 220, overflow: 'hidden', background: 'linear-gradient(135deg, var(--brand-light, #F2E8EA) 0%, var(--cream, #F8F3ED) 100%)', flexShrink: 0 }}>
           {image ? (
             <img src={image} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
               onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
@@ -86,15 +96,15 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
             {isLet ? 'TO LET' : 'FOR SALE'}
           </div>
           {/* Reference number */}
-          {p.reference && (
+          {ref && (
             <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.6)', color: 'white', padding: '4px 10px', fontSize: 11, fontFamily: 'Outfit, sans-serif', borderRadius: 2 }}>
-              Ref: {p.reference}
+              {ref}
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div style={{ padding: '20px 20px 16px' }}>
+        <div style={{ padding: '20px 20px 16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
           {/* Property type chip */}
           {p.property_type && (
             <div style={{ display: 'inline-block', background: 'var(--surface-warm, #FAF7F4)', color: 'var(--ink-secondary, #4A3830)', fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', padding: '3px 10px', borderRadius: 2, textTransform: 'uppercase', marginBottom: 10, fontFamily: 'Outfit, sans-serif' }}>
@@ -128,26 +138,61 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
             </div>
           )}
 
-          {/* Divider */}
-          <div style={{ borderTop: '1px solid var(--border, #E8DDD6)', margin: '14px 0' }} />
+          <div style={{ flex: 1 }} />
 
-          {/* Price + CTA */}
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
-            <div>
-              <span style={{
-                fontFamily: 'var(--font-display, "Cormorant Garamond", Georgia, serif)',
-                fontSize: 26, fontWeight: 700, color: 'var(--brand, #7B1D2A)',
-              }}>
-                {formatPrice(p.price)}
-              </span>
-              {isLet && <span style={{ color: 'var(--ink-muted, #8C7B72)', fontSize: 13, marginLeft: 4, fontFamily: 'Outfit, sans-serif' }}>/month</span>}
-            </div>
-            <span style={{ color: 'var(--brand, #7B1D2A)', fontSize: 13, fontWeight: 600, letterSpacing: '0.03em', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>
-              View Details →
+          {/* Divider */}
+          <div style={{ borderTop: '1px solid var(--border, #E8DDD6)', margin: '14px 0 16px' }} />
+
+          {/* Price */}
+          <div style={{ marginBottom: 14 }}>
+            <span style={{
+              fontFamily: 'var(--font-display, "Cormorant Garamond", Georgia, serif)',
+              fontSize: 26, fontWeight: 700, color: 'var(--brand, #7B1D2A)',
+            }}>
+              {formatPrice(p.price)}
             </span>
+            {isLet && <span style={{ color: 'var(--ink-muted, #8C7B72)', fontSize: 13, marginLeft: 4, fontFamily: 'Outfit, sans-serif' }}>/month</span>}
+          </div>
+
+          {/* Action buttons */}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={e => { e.stopPropagation(); router.push(`/properties/${p.id}`); }}
+              style={{
+                flex: 1, padding: '9px 12px', border: '1.5px solid var(--brand, #7B1D2A)',
+                background: 'transparent', color: 'var(--brand, #7B1D2A)',
+                borderRadius: 4, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                fontFamily: 'Outfit, sans-serif', transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand, #7B1D2A)'; e.currentTarget.style.color = 'white'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--brand, #7B1D2A)'; }}
+            >
+              View Details
+            </button>
+            <button
+              onClick={e => { e.stopPropagation(); setBookingOpen(true); }}
+              style={{
+                flex: 1, padding: '9px 12px', border: 'none',
+                background: 'var(--brand, #7B1D2A)', color: 'white',
+                borderRadius: 4, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                fontFamily: 'Outfit, sans-serif', transition: 'background 0.15s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--brand-deep, #5C0A1A)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'var(--brand, #7B1D2A)'}
+            >
+              Book Viewing
+            </button>
           </div>
         </div>
       </div>
-    </Link>
+
+      <BookingModal
+        isOpen={bookingOpen}
+        onClose={() => setBookingOpen(false)}
+        propertyTitle={p.title}
+        propertyRef={ref}
+        propertyId={p.id}
+      />
+    </>
   );
 }
