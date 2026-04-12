@@ -11,10 +11,10 @@ const NAV_LINKS = [
   { label: 'Buy', href: '/buy' },
   { label: 'Rent', href: '/let' },
   { label: 'Sell', href: '/sell' },
-  { label: 'Landlords', href: '/landlords' },
-  { label: 'Tenants', href: '/tenants' },
   { label: 'Properties', href: '/properties' },
+  { label: 'Development', href: '/development' },
   { label: 'Careers', href: '/careers' },
+  { label: 'Agents', href: '/agents' },
 ];
 
 export default function Navbar() {
@@ -74,7 +74,8 @@ export default function Navbar() {
       if (!res.ok) throw new Error('Invalid credentials');
       const data = await res.json();
       localStorage.setItem('access_token', data.access_token || data.token || '');
-      router.push('/dashboard');
+      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+      window.location.href = '/dashboard';
     } catch {
       setSignInError('Invalid credentials. Please try again.');
     }
@@ -122,8 +123,14 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Desktop right: sign in + list property */}
+          {/* Desktop right: phone + sign in + list property */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }} className="nav-desktop">
+            <a href="tel:+260971000000" style={{ color: textMuted, textDecoration: 'none', fontSize: 12.5, fontWeight: 500, fontFamily: 'Outfit, sans-serif', transition: 'color 0.15s', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => e.currentTarget.style.color = textColor}
+              onMouseLeave={e => e.currentTarget.style.color = textMuted}
+            >
+              +260 971 000 000
+            </a>
             {/* Sign In button + dropdown */}
             <div ref={dropdownRef} style={{ position: 'relative' }}>
               <button onClick={() => { setSignInOpen(v => !v); setSignInError(''); }} style={{
@@ -150,8 +157,9 @@ export default function Navbar() {
                   boxShadow: '0 16px 48px rgba(15,10,8,0.18)',
                   zIndex: 1000,
                 }}>
+                  <p style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 18, fontWeight: 600, color: 'var(--ink, #0F0A08)', marginBottom: 4 }}>Team &amp; Agent Login</p>
                   <p style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13, lineHeight: 1.5, marginBottom: 20 }}>
-                    Sign in to access your property dashboard.
+                    Access your Done &amp; Space dashboard.
                   </p>
                   {signInError && (
                     <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', padding: '8px 12px', borderRadius: 2, marginBottom: 14, fontSize: 12.5 }}>

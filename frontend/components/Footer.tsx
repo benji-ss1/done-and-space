@@ -9,6 +9,7 @@ const COLS = [
       { label: 'Properties for Sale', href: '/properties?type=sale' },
       { label: 'Properties to Let', href: '/properties?type=let' },
       { label: 'New Listings', href: '/properties' },
+      { label: 'Development Projects', href: '/development' },
       { label: 'Search by Area', href: '/properties' },
     ],
   },
@@ -26,11 +27,11 @@ const COLS = [
   {
     title: 'Company',
     links: [
-      { label: 'About Done & Space', href: '/contact' },
+      { label: 'About Done & Space', href: '/about' },
       { label: 'Careers', href: '/careers' },
       { label: "Buyer's Guide", href: '/buyers-guide' },
       { label: 'Contact Us', href: '/contact' },
-      { label: 'Privacy Policy', href: '#' },
+      { label: 'Privacy Policy', href: '/contact' },
     ],
   },
 ];
@@ -100,13 +101,17 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Compliance strip */}
+      <div style={{ background: 'rgba(255,255,255,0.04)', borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '16px 24px' }}>
+        <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, color: 'rgba(255,255,255,0.4)', textAlign: 'center', lineHeight: 1.7 }}>
+          Done &amp; Space Properties Limited · Licensed Real Estate Agency · Zambia · All listings verified before publication · No listing goes live without management approval · Every inquiry tracked in our CRM system
+        </p>
+      </div>
+
       {/* Bottom bar */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 24px', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
         <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12 }}>
-          © {new Date().getFullYear()} Done &amp; Space Properties Limited. All rights reserved.
-        </p>
-        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>
-          Licensed Real Estate Agency · Zambia
+          © {new Date().getFullYear()} Done &amp; Space Properties Limited. All rights reserved. Zambia.
         </p>
         <div style={{ display: 'flex', gap: 16 }}>
           {['Facebook', 'Instagram', 'LinkedIn'].map(name => (

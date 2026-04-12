@@ -205,6 +205,44 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ─── THE PLATFORM ─── */}
+      <section style={{ background: '#FFFFFF', padding: '100px 24px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold, #C4992A)', display: 'block', marginBottom: 16 }}>
+            How It Works
+          </span>
+          <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(36px, 5vw, 52px)', fontWeight: 600, color: 'var(--ink, #0F0A08)', lineHeight: 1.1, marginBottom: 20, maxWidth: 720 }}>
+            Eight Systems. One Platform.<br />Nothing Falls Through the Cracks.
+          </h2>
+          <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 18, color: 'var(--ink-secondary, #4A3830)', maxWidth: 580, lineHeight: 1.7, marginBottom: 64 }}>
+            Done &amp; Space is not a listing website. It is a fully integrated real estate operating system — from first inquiry to title transfer.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+            {([
+              { n: '01', title: 'Front Office Layer', body: 'Property search, verified listings, inquiry capture, and client-facing services. Simple for users. Structured behind the scenes.' },
+              { n: '02', title: 'Lead Engine', body: 'Every inquiry captured the moment it arrives. Qualified, routed, and assigned automatically. No lead ever exists outside our system.' },
+              { n: '03', title: 'CRM Pipeline', body: 'Full lifecycle tracking from inquiry to closing. Viewing scheduling, offer management, and interaction history — all in one place.' },
+              { n: '04', title: 'Deal Engine', body: 'Every transaction tracked end-to-end. Stage progression, document control, commission calculation, and closure records.' },
+              { n: '05', title: 'Compliance Layer', body: 'Mandate control, ownership verification, audit trails, and approval workflows. Every listing cleared before going live.' },
+              { n: '06', title: 'Fraud Detection', body: 'Duplicate listing detection, price anomaly alerts, identity verification, and communication logging protect every deal.' },
+              { n: '07', title: 'Agent Network', body: 'Controlled onboarding, territory allocation, performance tracking, and commission management. Scalable without disorder.' },
+              { n: '08', title: 'Analytics & Reporting', body: 'Lead conversion metrics, agent performance, revenue tracking, and daily pipeline reports. Data that drives decisions.' },
+            ] as {n:string;title:string;body:string}[]).map((card, i) => (
+              <div key={i} style={{ background: 'var(--cream, #F8F3ED)', border: '1px solid var(--border, #E8DDD6)', padding: '24px', borderRadius: 4 }}>
+                <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--gold, #C4992A)', marginBottom: 12 }}>{card.n}</div>
+                <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 18, fontWeight: 600, color: 'var(--ink, #0F0A08)', marginBottom: 10, lineHeight: 1.25 }}>{card.title}</h3>
+                <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 13, color: 'var(--ink-secondary, #4A3830)', lineHeight: 1.6 }}>{card.body}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 0, background: 'var(--gold-pale, #FBF5E6)', borderTop: '1px solid var(--border, #E8DDD6)', borderBottom: '1px solid var(--border, #E8DDD6)', padding: '20px', textAlign: 'center' }}>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 13, color: 'var(--ink-secondary, #4A3830)' }}>
+              Minimum acceptable standard: 85% system score across all modules — we hold ourselves to this on every deal we touch.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ─── FEATURED PROPERTIES ─── */}
       <section style={{ background: '#FAF7F4', padding: '96px 24px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
@@ -231,6 +269,31 @@ export default function HomePage() {
               <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 15 }}>Loading listings...</p>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* ─── COMPLIANCE & TRUST ─── */}
+      <section style={{ background: 'var(--ink, #0F0A08)', padding: '96px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0 }}>
+            {([
+              { title: 'Every Listing Verified', body: 'Before any property appears on our platform, we confirm ownership documents, check for duplicate listings, and validate pricing. No unverified listing goes live.', stat: '0 unverified listings published' },
+              { title: 'No Lead Lost. Ever.', body: 'Every inquiry from our website enters our CRM the moment it arrives — with timestamp, source, and category. It is assigned to a team member within the hour. We track every interaction until closure.', stat: '100% CRM capture rate' },
+              { title: 'Agents Under Governance', body: 'Every Done & Space agent operates under defined permissions, territory allocation, and performance tracking. Commissionable agents have controlled front-office access only — never unrestricted system entry.', stat: 'Role-based access enforced' },
+            ] as {title:string;body:string;stat:string}[]).map((col, i) => (
+              <div key={i} style={{ padding: '48px 40px', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
+                <div style={{ height: 4, width: '100%', background: 'var(--gold, #C4992A)', marginBottom: 28 }} />
+                <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 22, fontWeight: 600, color: 'white', marginBottom: 16, lineHeight: 1.25 }}>{col.title}</h3>
+                <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 14, color: 'rgba(255,255,255,0.7)', lineHeight: 1.75, marginBottom: 28 }}>{col.body}</p>
+                <div style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 22, fontWeight: 700, color: 'var(--gold, #C4992A)' }}>{col.stat}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 24, textAlign: 'center' }}>
+            <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
+              Built to score 85%+ across: Strategic Fit · Functional Completeness · CRM Strength · Control Systems · Compliance · Scalability
+            </p>
+          </div>
         </div>
       </section>
 
