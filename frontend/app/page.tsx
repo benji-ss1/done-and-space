@@ -62,15 +62,10 @@ export default function HomePage() {
       <section style={{
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center',
         paddingTop: 70, overflow: 'hidden',
-        background: 'linear-gradient(135deg, var(--brand-deep, #5C0A1A) 0%, var(--brand, #7B1D2A) 60%, #9B2D3A 100%)',
+        background: 'linear-gradient(150deg, #3A0510 0%, #5C0A1A 45%, #4A0814 100%)',
       }}>
         {/* Dot grid texture */}
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
-
-        {/* Decorative large text behind */}
-        <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(100px, 20vw, 200px)', fontWeight: 700, color: 'rgba(255,255,255,0.03)', fontFamily: 'Cormorant Garamond, Georgia, serif', letterSpacing: '-0.05em', userSelect: 'none', pointerEvents: 'none', whiteSpace: 'nowrap' }}>
-          D&amp;S
-        </div>
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)', backgroundSize: '28px 28px', pointerEvents: 'none' }} />
 
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 24px 100px', position: 'relative', width: '100%' }}>
           {/* Label pill */}
@@ -111,7 +106,6 @@ export default function HomePage() {
             </div>
             {/* Input row */}
             <div style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', gap: 12 }}>
-              <span style={{ fontSize: 16 }}>🔍</span>
               <input
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
@@ -127,8 +121,8 @@ export default function HomePage() {
 
           {/* Area chips */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 20 }}>
-            {['📍 Lusaka', '📍 Copperbelt', '📍 Livingstone', '📍 Kitwe'].map((city, i) => (
-              <Link key={i} href={`/properties?location=${city.replace('📍 ', '')}`}
+            {['Lusaka', 'Copperbelt', 'Livingstone', 'Kitwe'].map((city, i) => (
+              <Link key={i} href={`/properties?location=${city}`}
                 style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 13, padding: '5px 13px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 2, fontFamily: 'Outfit, sans-serif', transition: 'all 0.15s' }}
                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.14)'; e.currentTarget.style.color = 'white'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; }}
@@ -147,7 +141,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── STATS ─── */}
-      <section style={{ background: 'white', padding: '40px 24px', borderBottom: '1px solid var(--border, #E8DDD6)' }}>
+      <section style={{ background: '#FFFFFF', padding: '40px 24px', borderBottom: '1px solid var(--border, #E8DDD6)' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
           {STATS.map((s, i) => (
             <div key={i} style={{
@@ -166,7 +160,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── SERVICES ─── */}
-      <section style={{ background: 'var(--cream, #F8F3ED)', padding: '96px 24px' }}>
+      <section style={{ background: '#F8F3ED', padding: '96px 24px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ marginBottom: 56 }}>
             <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold, #C4992A)', display: 'block', marginBottom: 12 }}>
@@ -211,43 +205,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── FOUR JOURNEYS ─── */}
-      <section style={{ background: 'var(--brand-deep, #5C0A1A)', padding: '96px 24px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ marginBottom: 56, maxWidth: 600 }}>
-            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 400, fontStyle: 'italic', color: 'white', lineHeight: 1.1, marginBottom: 16 }}>
-              Who Are You?
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'Outfit, sans-serif', fontSize: 16, lineHeight: 1.65 }}>
-              We have a dedicated path for every client in Zambia.
-            </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-            {JOURNEYS.map((j, i) => (
-              <div key={i}
-                style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.05)', padding: '44px 32px', borderRadius: 0, transition: 'all 0.25s ease', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
-                onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.background = 'rgba(255,255,255,0.1)'; d.style.borderColor = 'rgba(196,153,42,0.4)'; }}
-                onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.background = 'rgba(255,255,255,0.05)'; d.style.borderColor = 'rgba(255,255,255,0.12)'; }}
-              >
-                <div style={{ width: 40, height: 3, background: 'var(--gold, #C4992A)', marginBottom: 24 }} />
-                <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 30, fontWeight: 600, color: 'white', marginBottom: 16, lineHeight: 1.15 }}>
-                  {j.title}
-                </h3>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'Outfit, sans-serif', fontSize: 14.5, lineHeight: 1.7, flex: 1, marginBottom: 28 }}>
-                  {j.body}
-                </p>
-                <Link href={j.href} style={{ color: 'var(--gold-light, #E8B84B)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, fontWeight: 600, textDecoration: 'none', letterSpacing: '0.02em', transition: 'letter-spacing 0.2s' }}>
-                  {j.cta}
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ─── FEATURED PROPERTIES ─── */}
-      <section style={{ background: 'var(--surface-warm, #FAF7F4)', padding: '96px 24px' }}>
+      <section style={{ background: '#FAF7F4', padding: '96px 24px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48, flexWrap: 'wrap', gap: 16 }}>
             <div>
@@ -269,7 +228,6 @@ export default function HomePage() {
             </div>
           ) : (
             <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--ink-faint, #C4B8B0)' }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>🏠</div>
               <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 15 }}>Loading listings...</p>
             </div>
           )}
@@ -277,7 +235,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── WHY DONE & SPACE ─── */}
-      <section style={{ background: 'white', padding: '96px 24px' }}>
+      <section style={{ background: '#FFFFFF', padding: '96px 24px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
           <div>
             <span style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold, #C4992A)', display: 'block', marginBottom: 16 }}>
@@ -310,8 +268,8 @@ export default function HomePage() {
       </section>
 
       {/* ─── BUYERS GUIDE PREVIEW ─── */}
-      <section style={{ background: 'var(--brand, #7B1D2A)', padding: '80px 24px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center', flexWrap: 'wrap' }}>
+      <section style={{ background: '#5C0A1A', padding: '80px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center' }}>
           <div>
             <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(26px, 4vw, 42px)', fontWeight: 400, fontStyle: 'italic', color: 'white', marginBottom: 12, lineHeight: 1.15 }}>
               The Done &amp; Space Guide to Buying Property in Zambia
@@ -327,7 +285,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── CTA BAND ─── */}
-      <section style={{ background: 'var(--gold, #C4992A)', padding: '64px 24px' }}>
+      <section style={{ background: '#C4992A', padding: '64px 24px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center' }}>
           <div>
             <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 700, color: 'var(--ink-deep, #1A0F0D)', marginBottom: 8 }}>
@@ -344,6 +302,41 @@ export default function HomePage() {
             <Link href="/properties" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent', color: 'var(--ink-deep, #1A0F0D)', padding: '13px 24px', fontFamily: 'Outfit, sans-serif', fontSize: 14, fontWeight: 600, textDecoration: 'none', borderRadius: 2, border: '2px solid var(--ink-deep, #1A0F0D)', letterSpacing: '0.02em' }}>
               Browse Properties
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHO ARE YOU ─── */}
+      <section style={{ background: '#3A0510', padding: '96px 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ marginBottom: 56, maxWidth: 600 }}>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 400, fontStyle: 'italic', color: 'white', lineHeight: 1.1, marginBottom: 16 }}>
+              Who Are You?
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'Outfit, sans-serif', fontSize: 16, lineHeight: 1.65 }}>
+              We have a dedicated path for every client in Zambia.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+            {JOURNEYS.map((j, i) => (
+              <div key={i}
+                style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.05)', padding: '44px 32px', borderRadius: 0, transition: 'all 0.25s ease', cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+                onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.background = 'rgba(255,255,255,0.1)'; d.style.borderColor = 'rgba(196,153,42,0.4)'; }}
+                onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.background = 'rgba(255,255,255,0.05)'; d.style.borderColor = 'rgba(255,255,255,0.12)'; }}
+              >
+                <div style={{ width: 40, height: 3, background: 'var(--gold, #C4992A)', marginBottom: 24 }} />
+                <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 30, fontWeight: 600, color: 'white', marginBottom: 16, lineHeight: 1.15 }}>
+                  {j.title}
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'Outfit, sans-serif', fontSize: 14.5, lineHeight: 1.7, flex: 1, marginBottom: 28 }}>
+                  {j.body}
+                </p>
+                <Link href={j.href} style={{ color: 'var(--gold-light, #E8B84B)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, fontWeight: 600, textDecoration: 'none', letterSpacing: '0.02em' }}>
+                  {j.cta}
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>

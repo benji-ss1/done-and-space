@@ -207,7 +207,7 @@ export default function BuyersGuidePage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {RED_FLAGS.map((flag, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 16, background: 'white', border: '1px solid #fca5a5', borderLeft: '3px solid #dc2626', padding: '16px 20px' }}>
-                <span style={{ color: '#dc2626', fontSize: 18, flexShrink: 0, lineHeight: 1.3 }}>⚠</span>
+                <span style={{ color: '#dc2626', fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', flexShrink: 0, lineHeight: 1.8, fontFamily: 'Outfit, sans-serif' }}>Note</span>
                 <p style={{ color: 'var(--ink-secondary, #4A3830)', fontFamily: 'Outfit, sans-serif', fontSize: 14.5, lineHeight: 1.6 }}>{flag}</p>
               </div>
             ))}

@@ -113,19 +113,18 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
           </h3>
 
           {/* Location */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--ink-muted, #8C7B72)', fontSize: 13, marginBottom: 12 }}>
-            <span>📍</span>
-            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {[p.city, p.province].filter(Boolean).join(', ') || p.location || 'Zambia'}
-            </span>
+          <div style={{ color: 'var(--ink-muted, #8C7B72)', fontSize: 13, marginBottom: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {[p.city, p.province].filter(Boolean).join(', ') || p.location || 'Zambia'}
           </div>
 
           {/* Stats */}
           {(p.bedrooms != null || p.bathrooms != null || p.size_sqm) && (
-            <div style={{ display: 'flex', gap: 16, marginBottom: 12, flexWrap: 'wrap' }}>
-              {p.bedrooms != null && <span style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13 }}>🛏 {p.bedrooms} bed</span>}
-              {p.bathrooms != null && <span style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13 }}>🚿 {p.bathrooms} bath</span>}
-              {p.size_sqm && <span style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13 }}>📐 {p.size_sqm}m²</span>}
+            <div style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13, marginBottom: 12 }}>
+              {[
+                p.bedrooms != null ? `${p.bedrooms} bed` : null,
+                p.bathrooms != null ? `${p.bathrooms} bath` : null,
+                p.size_sqm ? `${p.size_sqm}m²` : null,
+              ].filter(Boolean).join(' · ')}
             </div>
           )}
 

@@ -61,9 +61,9 @@ export default function ContactPage() {
             <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-muted, #8C7B72)', marginBottom: 12 }}>Office</p>
             <p style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 24, fontWeight: 600, color: 'var(--ink, #0F0A08)', marginBottom: 8 }}>Lusaka, Zambia</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, color: 'var(--ink-muted, #8C7B72)', fontFamily: 'Outfit, sans-serif', fontSize: 13.5, lineHeight: 1.6 }}>
-              <p>📍 Cairo Road, Central Business District</p>
-              <p>⏰ Monday–Friday: 8:00am – 5:00pm</p>
-              <p>⏰ Saturday: 9:00am – 1:00pm</p>
+              <p>Cairo Road, Central Business District</p>
+              <p>Monday–Friday: 8:00am – 5:00pm</p>
+              <p>Saturday: 9:00am – 1:00pm</p>
             </div>
           </div>
         </div>
@@ -85,12 +85,12 @@ export default function ContactPage() {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {[
-                { icon: '📞', title: 'Phone & WhatsApp', text: '+260 971 000 000' },
-                { icon: '✉', title: 'Email', text: 'info@doneandspace.com' },
-                { icon: '📍', title: 'Head Office', text: 'Cairo Road, Lusaka, Zambia' },
+                { title: 'Phone & WhatsApp', text: '+260 971 000 000' },
+                { title: 'Email', text: 'info@doneandspace.com' },
+                { title: 'Head Office', text: 'Cairo Road, Lusaka, Zambia' },
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                  <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>{item.icon}</span>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--gold, #C4992A)', flexShrink: 0, marginTop: 7 }} />
                   <div>
                     <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-muted, #8C7B72)', marginBottom: 3 }}>{item.title}</p>
                     <p style={{ color: 'var(--ink, #0F0A08)', fontFamily: 'Outfit, sans-serif', fontSize: 14.5 }}>{item.text}</p>

@@ -57,7 +57,7 @@ export default function Navbar() {
     ? 'rgba(255,255,255,0.97)'
     : 'transparent';
   const navShadow = scrolled && !mobileOpen ? '0 2px 12px rgba(0,0,0,0.08)' : 'none';
-  const navBorder = scrolled && !mobileOpen ? '1px solid rgba(15,10,8,0.06)' : 'none';
+  const navBorder = scrolled && !mobileOpen ? '1px solid var(--gold, #C4992A)' : 'none';
   const textColor = transparent ? 'rgba(255,255,255,0.9)' : 'var(--ink-deep, #1A0F0D)';
   const textMuted = transparent ? 'rgba(255,255,255,0.65)' : 'var(--ink-muted, #8C7B72)';
   const activeColor = transparent ? '#E8B84B' : 'var(--brand, #7B1D2A)';
@@ -98,16 +98,16 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop center nav */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 2 }} className="nav-desktop">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }} className="nav-desktop">
             {NAV_LINKS.map(link => {
               const active = pathname === link.href;
               return (
                 <Link key={link.href} href={link.href} style={{
                   color: active ? activeColor : textMuted,
                   textDecoration: 'none',
-                  padding: '6px 12px',
+                  padding: '6px 4px',
                   fontSize: 13.5,
-                  fontWeight: active ? 600 : 400,
+                  fontWeight: active ? 600 : 500,
                   fontFamily: 'Outfit, sans-serif',
                   letterSpacing: '0.01em',
                   transition: 'color 0.15s',
@@ -122,19 +122,8 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Desktop right: phone + sign in + list property */}
+          {/* Desktop right: sign in + list property */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }} className="nav-desktop">
-            <a href="tel:+260971000000" style={{
-              display: 'flex', alignItems: 'center', gap: 5,
-              color: textMuted, textDecoration: 'none', fontSize: 13, fontWeight: 500,
-              fontFamily: 'Outfit, sans-serif', transition: 'color 0.15s',
-            }}
-              onMouseEnter={e => e.currentTarget.style.color = textColor}
-              onMouseLeave={e => e.currentTarget.style.color = textMuted}
-            >
-              📞 +260 971 000 000
-            </a>
-
             {/* Sign In button + dropdown */}
             <div ref={dropdownRef} style={{ position: 'relative' }}>
               <button onClick={() => { setSignInOpen(v => !v); setSignInError(''); }} style={{
@@ -273,9 +262,6 @@ export default function Navbar() {
               </Link>
             </div>
             <div style={{ marginTop: 40 }}>
-              <a href="tel:+260971000000" style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 14, fontFamily: 'Outfit, sans-serif', marginBottom: 20 }}>
-                📞 +260 971 000 000
-              </a>
               <button onClick={() => { setMobileOpen(false); setSignInOpen(true); }} style={{ width: '100%', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.25)', color: 'white', padding: '13px', borderRadius: 2, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
                 Sign In
               </button>

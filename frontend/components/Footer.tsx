@@ -76,16 +76,16 @@ export default function Footer() {
           <h4 style={{ color: 'rgba(255,255,255,0.85)', fontSize: 11.5, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 20 }}>Get in Touch</h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <a href="tel:+260971000000" style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--gold, #C4992A)', fontSize: 13.5, textDecoration: 'none', fontWeight: 500 }}>
-              📞 +260 971 000 000
+              +260 971 000 000
             </a>
             <a href="mailto:info@doneandspace.com" style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.5)', fontSize: 13.5, textDecoration: 'none' }}
               onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.85)'}
               onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
             >
-              ✉ info@doneandspace.com
+              info@doneandspace.com
             </a>
             <span style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.4)', fontSize: 13.5 }}>
-              📍 Lusaka, Zambia
+              Lusaka, Zambia
             </span>
             <a
               href="https://wa.me/260971000000"
