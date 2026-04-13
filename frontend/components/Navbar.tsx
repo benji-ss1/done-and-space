@@ -14,7 +14,6 @@ const NAV_LINKS = [
   { label: 'Properties', href: '/properties' },
   { label: 'Development', href: '/development' },
   { label: 'Careers', href: '/careers' },
-  { label: 'Agents', href: '/agents' },
 ];
 
 export default function Navbar() {
@@ -110,14 +109,8 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Desktop right: phone + sign in + CTA */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }} className="nav-desktop">
-            <a href="tel:+260971000000" style={{ color: 'var(--ink-muted, #6B6B6B)', textDecoration: 'none', fontSize: 12.5, fontWeight: 500, fontFamily: "'Outfit', sans-serif", transition: 'color 0.15s', whiteSpace: 'nowrap' }}
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--ink, #1A1A1A)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-muted, #6B6B6B)'}
-            >
-              +260 971 000 000
-            </a>
+          {/* Desktop right: sign in + CTA */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }} className="nav-desktop">
 
             {/* Sign In button + dropdown */}
             <div ref={dropdownRef} style={{ position: 'relative' }}>

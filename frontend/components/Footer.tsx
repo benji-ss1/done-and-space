@@ -53,7 +53,7 @@ export default function Footer() {
         <div>
           <Logo variant="light" width={145} />
           <p style={{ color: 'rgba(255,255,255,0.60)', fontSize: 14, lineHeight: 1.7, marginTop: 16, maxWidth: 280, fontFamily: "'Outfit', sans-serif" }}>
-            A trusted, technology-enabled real estate platform. Simple for users. Disciplined for management. Built to scale nationally.
+            A licensed real estate agency operating across Zambia. Our platform is built for the way property is bought, sold, and managed here. Straightforward, documented, and accountable at every step.
           </p>
           <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
             {(['Facebook', 'Instagram', 'YouTube'] as const).map(name => (
@@ -114,14 +114,14 @@ export default function Footer() {
       {/* Compliance strip */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', marginTop: 48, padding: '16px 40px', textAlign: 'center' }}>
         <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 11, color: 'rgba(255,255,255,0.35)', lineHeight: 1.8 }}>
-          Done &amp; Space Properties Limited · Licensed Real Estate Agency · Zambia · All listings verified before publication · No listing goes live without management approval · Every inquiry tracked in our CRM system
+          Done and Space Properties Limited. Licensed Real Estate Agency. Zambia. All listings reviewed before publication. Every inquiry tracked and assigned.
         </p>
       </div>
 
       {/* Copyright bar */}
       <div style={{ background: 'rgba(0,0,0,0.25)', padding: '16px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
         <p style={{ color: 'rgba(255,255,255,0.30)', fontSize: 12, fontFamily: "'Outfit', sans-serif" }}>
-          © {new Date().getFullYear()} Done &amp; Space Properties Limited. All rights reserved.
+          {new Date().getFullYear()} Done and Space Properties Limited. All rights reserved.
         </p>
         <Link href="/dashboard" style={{ color: 'rgba(255,255,255,0.30)', fontSize: 12, textDecoration: 'none', fontFamily: "'Outfit', sans-serif", transition: 'color 0.15s' }}
           onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.65)'}

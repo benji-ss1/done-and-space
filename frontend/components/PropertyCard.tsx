@@ -87,18 +87,18 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
           {/* Listing type badge */}
           <div style={{
             position: 'absolute', top: 0, left: 0,
-            background: isLet ? 'var(--gold, #C4992A)' : 'var(--brand, #7B1D2A)',
-            color: isLet ? 'var(--ink, #0F0A08)' : 'white',
+            background: isLet ? '#1e3a5f' : 'var(--brand, #7B1D2A)',
+            color: 'white',
             padding: '6px 14px',
             fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
             fontFamily: 'Outfit, sans-serif',
           }}>
-            {isLet ? 'TO LET' : 'FOR SALE'}
+            {isLet ? 'To Let' : 'For Sale'}
           </div>
           {/* Reference number */}
           {ref && (
             <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.6)', color: 'white', padding: '4px 10px', fontSize: 11, fontFamily: 'Outfit, sans-serif', borderRadius: 2 }}>
-              {ref}
+              Ref {ref}
             </div>
           )}
         </div>
@@ -131,10 +131,10 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
           {(p.bedrooms != null || p.bathrooms != null || p.size_sqm) && (
             <div style={{ color: 'var(--ink-secondary, #4A3830)', fontSize: 13, marginBottom: 12 }}>
               {[
-                p.bedrooms != null ? `${p.bedrooms} bed` : null,
-                p.bathrooms != null ? `${p.bathrooms} bath` : null,
-                p.size_sqm ? `${p.size_sqm}m²` : null,
-              ].filter(Boolean).join(' · ')}
+                p.bedrooms != null ? `${p.bedrooms} Bedrooms` : null,
+                p.bathrooms != null ? `${p.bathrooms} Bathrooms` : null,
+                p.size_sqm ? `${p.size_sqm} sqm` : null,
+              ].filter(Boolean).join('   ')}
             </div>
           )}
 
@@ -167,7 +167,7 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand, #7B1D2A)'; e.currentTarget.style.color = 'white'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--brand, #7B1D2A)'; }}
             >
-              View Details
+              View Property
             </button>
             <button
               onClick={e => { e.stopPropagation(); setBookingOpen(true); }}
@@ -180,7 +180,7 @@ export default function PropertyCard({ property: p }: PropertyCardProps) {
               onMouseEnter={e => e.currentTarget.style.background = 'var(--brand-deep, #5C0A1A)'}
               onMouseLeave={e => e.currentTarget.style.background = 'var(--brand, #7B1D2A)'}
             >
-              Book Viewing
+              Book a Viewing
             </button>
           </div>
         </div>

@@ -9,43 +9,75 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'https://done-space-backend-produ
 
 const STATS = [
   { value: '850+',  label: 'Active Listings' },
-  { value: '2,400+', label: 'Deals Closed' },
-  { value: '120+',  label: 'Verified Agents' },
-  { value: '18',    label: 'Regions Covered' },
+  { value: '2,400+', label: 'Deals Completed' },
+  { value: '120+',  label: 'Agents Nationwide' },
+  { value: '18',    label: 'Provinces Covered' },
 ];
 
 const SERVICES = [
-  { title: 'Buy Property',            body: 'Verified listings across all provinces. Every listing confirmed before going live. From Kabulonga stands to Copperbelt apartments.', href: '/buy' },
-  { title: 'Sell Your Property',      body: 'We match you with serious, pre-qualified buyers and handle everything from listing to title transfer. Maximum price, minimum hassle.', href: '/sell' },
-  { title: 'Let Your Property',       body: 'Quality tenant screening, lease management, and monthly rent collection. Peace of mind for landlords across Zambia.', href: '/landlords' },
-  { title: 'Find Rental Accommodation', body: 'Genuine rentals. No hidden fees. Lusaka to Livingstone. Browse verified listings and move in with confidence.', href: '/let' },
-  { title: 'Property Development',    body: 'From stand development to full commercial builds. Backed by market data and a network of trusted contractors.', href: '/development' },
-  { title: 'Property Maintenance',    body: 'Preventive care and responsive repairs. Fast contractor dispatch, transparent pricing, full digital records.', href: '/maintenance' },
+  { title: 'Buy Property',            body: 'Verified listings across all provinces. Every listing is confirmed before it goes live. From Kabulonga stands to Copperbelt apartments, each property is reviewed by our compliance team.', href: '/buy' },
+  { title: 'Sell Your Property',      body: 'We match you with serious, pre-qualified buyers and handle everything from listing to title transfer. Our team manages the process so you receive the best outcome at each stage.', href: '/sell' },
+  { title: 'Let Your Property',       body: 'Quality tenant screening, lease management, and monthly rent collection. Landlords across Zambia rely on our team to handle tenancy so they do not have to.', href: '/landlords' },
+  { title: 'Find a Rental',           body: 'Genuine rentals with no hidden fees, from Lusaka to Livingstone. Browse verified listings and move into a property that has been checked and approved before publication.', href: '/let' },
+  { title: 'Property Development',    body: 'From stand development to full commercial builds, backed by market data and a network of trusted contractors. We manage the process from concept through to handover.', href: '/development' },
+  { title: 'Property Maintenance',    body: 'Preventive care and responsive repairs with fast contractor dispatch, transparent pricing, and complete digital records maintained throughout every job.', href: '/maintenance' },
 ];
 
 const JOURNEYS = [
-  { title: 'For Buyers',    body: "Looking for a 3-bedroom in Woodlands, a stand in Ibex Hill, or a commercial space in town? Zambia's most verified listings.", cta: 'Start Searching →', href: '/buy' },
-  { title: 'For Sellers',   body: 'Get a proper market valuation and access to genuine buyers. No time-wasters. We handle everything from listing to title transfer.', cta: 'Get a Valuation →', href: '/sell' },
-  { title: 'For Landlords', body: "Tired of chasing rent? We screen tenants properly, collect monthly, and handle maintenance so you don't have to.", cta: 'Let Your Property →', href: '/landlords' },
-  { title: 'For Tenants',   body: 'Find genuine, well-maintained rentals in the areas you want. Transparent pricing. Move-in ready. No surprises.', cta: 'Find Accommodation →', href: '/tenants' },
+  { title: 'For Buyers',    body: "We list verified properties across all areas of Zambia. Every listing is reviewed before it reaches you, from Kabulonga stands to Copperbelt apartments.", cta: 'Start Searching', href: '/buy' },
+  { title: 'For Sellers',   body: 'Receive a proper market valuation and connect with qualified buyers. Our team manages the process from listing through to title transfer.', cta: 'Get a Valuation', href: '/sell' },
+  { title: 'For Landlords', body: "We screen tenants carefully, collect rent monthly, and handle maintenance issues so you receive income without the operational burden.", cta: 'Let Your Property', href: '/landlords' },
+  { title: 'For Tenants',   body: 'Find well-maintained rentals in the areas you prefer. All listings are verified before publication. Pricing is clear and agreed in writing from the start.', cta: 'Find Accommodation', href: '/tenants' },
 ];
 
 const PLATFORM = [
-  { n: '01', title: 'Front Office Layer',   body: 'Property search, verified listings, inquiry capture. Simple for users. Structured behind the scenes.' },
-  { n: '02', title: 'Lead Engine',          body: 'Every inquiry captured the moment it arrives. Qualified, routed, and assigned. No lead ever falls outside our system.' },
-  { n: '03', title: 'CRM Pipeline',         body: 'Full lifecycle tracking from inquiry to closing. Viewing scheduling, offer management, all in one place.' },
-  { n: '04', title: 'Deal Engine',          body: 'Every transaction tracked end-to-end. Stage progression, document control, commission, and closure records.' },
-  { n: '05', title: 'Compliance Layer',     body: 'Mandate control, ownership verification, audit trails, approval workflows. Every listing cleared before going live.' },
-  { n: '06', title: 'Fraud Detection',      body: 'Duplicate detection, price anomaly alerts, identity verification, and communication logging protect every deal.' },
-  { n: '07', title: 'Agent Network',        body: 'Controlled onboarding, territory allocation, performance tracking, and commission management.' },
-  { n: '08', title: 'Analytics & Reports',  body: 'Lead conversion metrics, agent performance, revenue tracking, and daily pipeline reports.' },
+  { n: '01', title: 'Front Office',         body: 'Property search, verified listings, and inquiry capture. Every public-facing interaction is structured and routed into our operations team.' },
+  { n: '02', title: 'Lead Engine',          body: 'Every inquiry captured the moment it arrives. Qualified, categorised, and assigned automatically. No lead exists outside our system.' },
+  { n: '03', title: 'CRM Pipeline',         body: 'Full lifecycle tracking from first contact to closing. Viewing scheduling, offer management, and interaction history in one place.' },
+  { n: '04', title: 'Deal Engine',          body: 'Every transaction tracked end to end. Stage progression, document control, commission calculation, and closure records.' },
+  { n: '05', title: 'Compliance',           body: 'Mandate control, ownership verification, audit trails, and approval workflows. Every listing is cleared before it goes live.' },
+  { n: '06', title: 'Fraud Detection',      body: 'Duplicate listing detection, price anomaly alerts, identity verification, and communication logging protect every deal on the platform.' },
+  { n: '07', title: 'Agent Network',        body: 'Controlled onboarding, territory allocation, performance tracking, and commission management. Growth without disorder.' },
+  { n: '08', title: 'Analytics and Reporting', body: 'Lead conversion rates, agent performance, revenue tracking, and daily pipeline reports. Data that drives real decisions.' },
 ];
 
 const ZAMBIA_WHY = [
-  { icon: '💵', title: 'Cash Buyer Ready', body: 'Most Zambian deals are cash. Our listings include cash-ready tags and seller flexibility status so buyers know what to expect upfront.' },
-  { icon: '📋', title: 'Title Verified', body: 'Every listing is document-checked. We confirm title deeds, leasehold status, and encumbrances before anything goes live on the platform.' },
-  { icon: '⚡', title: 'Utilities Matter', body: 'We capture borehole, solar, generator, and grid connection status for every property — because in Zambia, off-grid readiness is a real value driver.' },
-  { icon: '💬', title: 'WhatsApp-First', body: 'Zambians move deals on WhatsApp. Every inquiry you make connects directly to a live agent — no bots, no overseas call centres, just fast local responses.' },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M9 9h4.5a2.5 2.5 0 0 1 0 5H9"/><path d="M9 15h5"/>
+      </svg>
+    ),
+    title: 'Built for Cash Buyers',
+    body: 'Most property transactions in Zambia are self-financed. Our platform is built around that reality. Listings include payment flexibility indicators and seller terms so buyers can assess each property on its actual conditions, not a mortgage assumption.',
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+      </svg>
+    ),
+    title: 'Title and Ownership Confirmed',
+    body: 'Title deed status, leasehold classification, and encumbrance checks are completed before any listing reaches our platform. In a market where documentation remains a primary risk, this is not a feature. It is our minimum standard.',
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    ),
+    title: 'Utilities Are Part of the Story',
+    body: 'Borehole access, solar installation, backup power, and grid reliability are captured as first-class listing details. With ongoing energy pressures across Zambia, these factors directly affect a property\'s value and your daily quality of life.',
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    ),
+    title: 'Fast, Local Response',
+    body: 'Every inquiry reaches a local agent who knows the area, understands market conditions, and responds the same day. Done and Space operates on WhatsApp because that is how business moves in Zambia.',
+  },
 ];
 
 const PROP_TYPES = ['Any Type', 'House', 'Apartment', 'Office', 'Commercial', 'Land'];
@@ -113,11 +145,6 @@ export default function HomePage() {
         }} />
 
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 40px 100px', position: 'relative', width: '100%' }}>
-          {/* Pill */}
-          <div style={{ display: 'inline-block', border: '1px solid rgba(201,168,76,0.45)', color: 'rgba(201,168,76,0.9)', padding: '6px 20px', borderRadius: 40, fontSize: 11, letterSpacing: '0.16em', fontFamily: "'Outfit', sans-serif", fontWeight: 500, marginBottom: 28, textTransform: 'uppercase' }}>
-            Verified Listings · Controlled Platform · Zambia
-          </div>
-
           {/* Heading */}
           <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", lineHeight: 1.05, marginBottom: 24, maxWidth: 760 }}>
             <span style={{ display: 'block', fontSize: 'clamp(44px, 7vw, 82px)', fontWeight: 900, color: 'white' }}>Your Space.</span>
@@ -125,7 +152,7 @@ export default function HomePage() {
           </h1>
 
           <p style={{ color: 'rgba(255,255,255,0.72)', fontFamily: "'Outfit', sans-serif", fontSize: 18, maxWidth: 520, lineHeight: 1.7, marginBottom: 40 }}>
-            Done &amp; Space connects buyers, sellers, landlords, and tenants through a platform built on verification, accountability, and results.
+            Done and Space connects buyers, sellers, landlords, and tenants across Zambia through a platform built on documentation, accountability, and results.
           </p>
 
           {/* Search bar */}
@@ -147,7 +174,7 @@ export default function HomePage() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end' }}>
               <div style={{ flex: '1 1 180px', minWidth: 160 }}>
                 <label style={lblStyle}>Location</label>
-                <input value={location} onChange={e => setLocation(e.target.value)} onKeyDown={e => e.key === 'Enter' && doSearch()} placeholder="City, area or region..." style={inpStyle} />
+                <input value={location} onChange={e => setLocation(e.target.value)} onKeyDown={e => e.key === 'Enter' && doSearch()} placeholder="Area, suburb or town" style={inpStyle} />
               </div>
               <div style={{ flex: '1 1 160px', minWidth: 140 }}>
                 <label style={lblStyle}>Property Type</label>
@@ -181,7 +208,7 @@ export default function HomePage() {
                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.18)'; e.currentTarget.style.color = 'white'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.10)'; e.currentTarget.style.color = 'rgba(255,255,255,0.75)'; }}
               >
-                {label} →
+                {label}
               </Link>
             ))}
           </div>
@@ -212,13 +239,13 @@ export default function HomePage() {
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48, flexWrap: 'wrap', gap: 16 }}>
             <div>
               <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--brand, #7B1828)', display: 'block', marginBottom: 10 }}>
-                Hand-Picked Properties
+                Current Listings
               </span>
               <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(30px, 4vw, 46px)', fontWeight: 700, color: 'var(--ink, #1A1A1A)', marginBottom: 8 }}>
-                Featured Listings
+                Properties Available Now
               </h2>
-              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 15, color: 'var(--ink-muted, #6B6B6B)', maxWidth: 440, lineHeight: 1.65 }}>
-                Every listing is verified by our compliance team before it reaches you.
+              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 15, color: 'var(--ink-muted, #6B6B6B)', maxWidth: 480, lineHeight: 1.65 }}>
+                Each property on our platform has been reviewed by our team before publication. Ownership is confirmed, documentation is checked, and pricing is verified against current market conditions.
               </p>
             </div>
             <Link href="/properties" style={{ color: 'var(--brand, #7B1828)', fontFamily: "'Outfit', sans-serif", fontSize: 14, fontWeight: 600, textDecoration: 'none', border: '1.5px solid var(--brand, #7B1828)', padding: '10px 22px', borderRadius: 4, whiteSpace: 'nowrap', transition: 'all 0.15s' }}
@@ -254,13 +281,13 @@ export default function HomePage() {
               Built for How Zambia Buys
             </h2>
             <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 15, color: 'var(--ink-muted, #6B6B6B)', lineHeight: 1.7 }}>
-              We built this platform around how real estate actually works here — not how it works in London or Johannesburg.
+              We built this platform around how real estate actually works here, not how it works in London or Johannesburg.
             </p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
             {ZAMBIA_WHY.map((tile, i) => (
               <div key={i} style={{ background: 'white', border: '1px solid var(--border, #E0D9CE)', padding: '32px 24px', borderRadius: 4 }}>
-                <div style={{ fontSize: 28, marginBottom: 16 }}>{tile.icon}</div>
+                <div style={{ color: 'var(--brand, #7B1828)', marginBottom: 16 }}>{tile.icon}</div>
                 <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 18, fontWeight: 600, color: 'var(--ink, #1A1A1A)', marginBottom: 10 }}>{tile.title}</h3>
                 <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13.5, color: 'var(--ink-muted, #6B6B6B)', lineHeight: 1.7 }}>{tile.body}</p>
               </div>
@@ -277,8 +304,11 @@ export default function HomePage() {
               Our Services
             </span>
             <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 700, color: 'var(--ink, #1A1A1A)', lineHeight: 1.15 }}>
-              Everything Property.<br /><span style={{ color: 'var(--ink-muted, #6B6B6B)', fontWeight: 400 }}>Under One Roof.</span>
+              Full Service.<br /><span style={{ color: 'var(--ink-muted, #6B6B6B)', fontWeight: 400 }}>Across Every Stage.</span>
             </h2>
+            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 15, color: 'var(--ink-muted, #6B6B6B)', maxWidth: 520, lineHeight: 1.7, marginTop: 16 }}>
+              From the first enquiry to the final transfer, Done and Space manages every step of the property journey with structure, accountability, and clear communication throughout.
+            </p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
             {SERVICES.map((s, i) => (
@@ -305,10 +335,10 @@ export default function HomePage() {
             How It Works
           </span>
           <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(36px, 5vw, 52px)', fontWeight: 700, color: 'var(--ink, #1A1A1A)', lineHeight: 1.1, marginBottom: 20, maxWidth: 720 }}>
-            Eight Systems. One Platform.<br />Nothing Falls Through the Cracks.
+            Eight Systems. One Platform.
           </h2>
           <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 17, color: 'var(--ink-muted, #6B6B6B)', maxWidth: 560, lineHeight: 1.7, marginBottom: 56 }}>
-            Done &amp; Space is a fully integrated real estate operating system — from first inquiry to title transfer.
+            Done and Space is a fully integrated real estate operating system, from first inquiry to title transfer.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
             {PLATFORM.map((card, i) => (
@@ -321,7 +351,7 @@ export default function HomePage() {
           </div>
           <div style={{ marginTop: 24, background: 'var(--gold-pale, #FBF6EC)', border: '1px solid var(--gold, #C9A84C)', padding: '18px 24px', borderRadius: 4, textAlign: 'center' }}>
             <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13, color: 'var(--ink-muted, #6B6B6B)' }}>
-              Minimum acceptable standard: 85% system score across all modules — we hold ourselves to this on every deal we touch.
+              We measure platform performance across strategic fit, functional completeness, CRM strength, control systems, compliance, and scalability. The minimum acceptable standard is 85 across all modules on every deal we handle.
             </p>
           </div>
         </div>
@@ -332,9 +362,9 @@ export default function HomePage() {
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0 }}>
             {([
-              { title: 'Every Listing Verified', body: 'Before any property appears on our platform, we confirm ownership documents, check for duplicate listings, and validate pricing. No unverified listing goes live.', stat: '0 unverified listings published' },
-              { title: 'No Lead Lost. Ever.', body: 'Every inquiry from our website enters our CRM the moment it arrives — with timestamp, source, and category. Assigned to a team member within the hour. Tracked until closure.', stat: '100% CRM capture rate' },
-              { title: 'Agents Under Governance', body: 'Every Done & Space agent operates under defined permissions, territory allocation, and performance tracking. Role-based access — controlled front-office entry only.', stat: 'Role-based access enforced' },
+              { title: 'Every Listing Reviewed', body: 'Before a property appears on this platform we confirm ownership documents, check for duplicate listings, and assess pricing against comparable transactions. Nothing reaches buyers unverified.', stat: 'No listing published without internal review.' },
+              { title: 'No Inquiry Is Lost', body: 'Every message, form submission, and WhatsApp inquiry enters our CRM the moment it arrives with a timestamp, source, and category. It is assigned to a team member and tracked until there is a clear outcome.', stat: 'All inquiries assigned within the hour.' },
+              { title: 'Agents Under Structure', body: 'Every Done and Space agent operates under defined territory allocation, performance tracking, and permissions. Commissionable agents have controlled platform access. Internal operations remain separate from public-facing participation.', stat: 'Defined permissions at every level.' },
             ] as { title: string; body: string; stat: string }[]).map((col, i) => (
               <div key={i} style={{ padding: '48px 40px', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
                 <div style={{ height: 4, width: '100%', background: 'var(--brand, #7B1828)', marginBottom: 28 }} />
@@ -380,10 +410,10 @@ export default function HomePage() {
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center' }}>
           <div>
             <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 400, fontStyle: 'italic', color: 'white', marginBottom: 12, lineHeight: 1.15 }}>
-              The Done &amp; Space Guide to Buying Property in Zambia
+              The Done and Space Guide to Buying Property in Zambia
             </h2>
             <p style={{ color: 'var(--gold, #C9A84C)', fontFamily: "'Outfit', sans-serif", fontSize: 15, lineHeight: 1.65 }}>
-              Everything you need to know before signing anything — from title searches to transfer taxes.
+              Everything you need to know before signing anything, from title searches to transfer taxes.
             </p>
           </div>
           <Link href="/buyers-guide" style={{ background: 'var(--gold, #C9A84C)', color: 'var(--ink, #1A1A1A)', padding: '14px 28px', fontFamily: "'Outfit', sans-serif", fontSize: 14, fontWeight: 700, textDecoration: 'none', borderRadius: 4, whiteSpace: 'nowrap' }}>
@@ -396,8 +426,8 @@ export default function HomePage() {
       <section style={{ background: 'var(--gold, #C9A84C)', padding: '64px 40px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center' }}>
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 700, color: 'var(--ink, #1A1A1A)', marginBottom: 8 }}>Ready to Get Started?</h2>
-            <p style={{ color: 'rgba(26,26,26,0.65)', fontFamily: "'Outfit', sans-serif", fontSize: 15 }}>Talk to a real person. No bots. No delays.</p>
+            <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 700, color: 'var(--ink, #1A1A1A)', marginBottom: 8 }}>Ready to Begin?</h2>
+            <p style={{ color: 'rgba(26,26,26,0.65)', fontFamily: "'Outfit', sans-serif", fontSize: 15 }}>Speak with a local agent. Real responses, same day.</p>
           </div>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <a href="https://wa.me/260971000000" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--ink, #1A1A1A)', color: 'white', padding: '13px 24px', fontFamily: "'Outfit', sans-serif", fontSize: 14, fontWeight: 600, textDecoration: 'none', borderRadius: 4 }}>

@@ -5,24 +5,24 @@ interface LogoProps {
   width?: number;
 }
 
-export default function Logo({ variant = 'dark', width = 160 }: LogoProps) {
-  const isLight = variant === 'light';
-  const containerWidth = width;
-  const containerHeight = 48;
-  // Negative marginTop crops out the stacked version at the top of the image,
-  // leaving only the horizontal logo visible at the bottom.
-  const marginTop = -52;
-
+export default function Logo({ variant = 'dark', width = 148 }: LogoProps) {
   return (
-    <div style={{ overflow: 'hidden', height: `${containerHeight}px`, width: `${containerWidth}px` }}>
+    <div style={{
+      position: 'relative',
+      width: `${width}px`,
+      height: '46px',
+      overflow: 'hidden',
+      flexShrink: 0,
+    }}>
       <img
         src="/doneandspacelogo.jpg"
-        alt="Done & Space Properties Limited"
+        alt="Done and Space Properties Limited"
         style={{
-          width: `${containerWidth}px`,
-          marginTop: `${marginTop}px`,
-          display: 'block',
-          filter: isLight ? 'brightness(0) invert(1)' : 'none',
+          position: 'absolute',
+          width: `${width}px`,
+          bottom: 0,
+          left: 0,
+          filter: variant === 'light' ? 'brightness(0) invert(1)' : 'none',
         }}
       />
     </div>
