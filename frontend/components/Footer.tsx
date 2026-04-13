@@ -10,7 +10,8 @@ const COLS = [
       { label: 'Properties to Let',   href: '/properties?listing_type=let' },
       { label: 'New Developments',    href: '/development' },
       { label: 'Search by Area',      href: '/properties' },
-      { label: 'Submit a Property',   href: '/sell' },
+      { label: 'Serviced Plots',        href: '/properties' },
+      { label: 'Submit a Property',     href: '/sell' },
     ],
   },
   {

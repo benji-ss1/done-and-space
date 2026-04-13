@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import PropertyCard from '../components/PropertyCard';
 
@@ -38,6 +39,13 @@ const PLATFORM = [
   { n: '06', title: 'Fraud Detection',      body: 'Duplicate detection, price anomaly alerts, identity verification, and communication logging protect every deal.' },
   { n: '07', title: 'Agent Network',        body: 'Controlled onboarding, territory allocation, performance tracking, and commission management.' },
   { n: '08', title: 'Analytics & Reports',  body: 'Lead conversion metrics, agent performance, revenue tracking, and daily pipeline reports.' },
+];
+
+const ZAMBIA_WHY = [
+  { icon: '💵', title: 'Cash Buyer Ready', body: 'Most Zambian deals are cash. Our listings include cash-ready tags and seller flexibility status so buyers know what to expect upfront.' },
+  { icon: '📋', title: 'Title Verified', body: 'Every listing is document-checked. We confirm title deeds, leasehold status, and encumbrances before anything goes live on the platform.' },
+  { icon: '⚡', title: 'Utilities Matter', body: 'We capture borehole, solar, generator, and grid connection status for every property — because in Zambia, off-grid readiness is a real value driver.' },
+  { icon: '💬', title: 'WhatsApp-First', body: 'Zambians move deals on WhatsApp. Every inquiry you make connects directly to a live agent — no bots, no overseas call centres, just fast local responses.' },
 ];
 
 const PROP_TYPES = ['Any Type', 'House', 'Apartment', 'Office', 'Commercial', 'Land'];
@@ -89,17 +97,20 @@ export default function HomePage() {
         position: 'relative', minHeight: '92vh', display: 'flex', alignItems: 'center',
         paddingTop: 72, overflow: 'hidden',
       }}>
-        {/* Gradient background */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(150deg, #0F0508 0%, #1E0A0D 25%, #3D1018 55%, #2A0A12 80%, #1A0810 100%)' }} />
-        {/* Grid texture overlay */}
+        {/* Background photo — replace with licensed image before go-live */}
+        <Image
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80&auto=format&fit=crop"
+          alt=""
+          fill
+          priority
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
+        />
+        {/* Directional overlay: dark left → light right */}
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,255,255,0.012) 60px, rgba(255,255,255,0.012) 61px),
-            repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.012) 60px, rgba(255,255,255,0.012) 61px)`,
+          background: 'linear-gradient(to right, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.15) 100%)',
           pointerEvents: 'none',
         }} />
-        {/* Radial glow */}
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 60% 50%, rgba(123,24,40,0.28) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 40px 100px', position: 'relative', width: '100%' }}>
           {/* Pill */}
@@ -232,8 +243,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── SERVICES ─── */}
+      {/* ─── BUILT FOR ZAMBIA ─── */}
       <section style={{ background: 'var(--cream, #F5F0E8)', padding: '96px 40px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ marginBottom: 56, maxWidth: 640 }}>
+            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--brand, #7B1828)', display: 'block', marginBottom: 12 }}>
+              Why Done &amp; Space
+            </span>
+            <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(30px, 4vw, 44px)', fontWeight: 700, color: 'var(--ink, #1A1A1A)', lineHeight: 1.15, marginBottom: 16 }}>
+              Built for How Zambia Buys
+            </h2>
+            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 15, color: 'var(--ink-muted, #6B6B6B)', lineHeight: 1.7 }}>
+              We built this platform around how real estate actually works here — not how it works in London or Johannesburg.
+            </p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+            {ZAMBIA_WHY.map((tile, i) => (
+              <div key={i} style={{ background: 'white', border: '1px solid var(--border, #E0D9CE)', padding: '32px 24px', borderRadius: 4 }}>
+                <div style={{ fontSize: 28, marginBottom: 16 }}>{tile.icon}</div>
+                <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 18, fontWeight: 600, color: 'var(--ink, #1A1A1A)', marginBottom: 10 }}>{tile.title}</h3>
+                <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13.5, color: 'var(--ink-muted, #6B6B6B)', lineHeight: 1.7 }}>{tile.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── SERVICES ─── */}
+      <section style={{ background: 'white', padding: '96px 40px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ marginBottom: 56 }}>
             <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--brand, #7B1828)', display: 'block', marginBottom: 12 }}>

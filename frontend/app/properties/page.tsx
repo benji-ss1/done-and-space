@@ -7,7 +7,10 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'https://done-space-backend-produ
 
 const PROP_TYPES = ['HOUSE', 'APARTMENT', 'OFFICE', 'COMMERCIAL', 'LAND'];
 const BEDROOM_OPTIONS = ['Studio', '1', '2', '3', '4+'];
-const AMENITIES = ['Pool', 'Gym', 'Parking', 'Balcony', 'Garden', 'Boardroom', 'Generator', 'Security System', 'Borehole', 'Solar Panels'];
+const AMENITIES = ['Pool', 'Gym', 'Parking', 'Balcony', 'Garden', 'Boardroom', 'Security System'];
+const UTILITIES = ['Solar Panels', 'Borehole', 'Generator', 'Prepaid Electric'];
+const BUYER_TYPES = ['Cash Buyer', 'Build in Phases', 'Negotiable'];
+const TITLE_STATUS = ['Full Title', 'Leasehold', 'Occupancy Licence'];
 
 const selStyle: React.CSSProperties = {
   border: '1.5px solid var(--border, #E0D9CE)', borderRadius: 4, padding: '10px 14px',
@@ -39,6 +42,9 @@ function PropertiesContent() {
   const [selectedBeds, setSelectedBeds] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedUtilities, setSelectedUtilities] = useState<string[]>([]);
+  const [selectedBuyerTypes, setSelectedBuyerTypes] = useState<string[]>([]);
+  const [selectedTitleStatus, setSelectedTitleStatus] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState(true); // active
   const [sortBy, setSortBy] = useState('newest');
 
@@ -218,9 +224,42 @@ function PropertiesContent() {
             ))}
           </div>
 
+          {/* Utilities */}
+          <div style={sidebarHdg}>Utilities</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {UTILITIES.map(u => (
+              <label key={u} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: 'var(--ink-muted, #6B6B6B)', fontFamily: "'Outfit', sans-serif" }}>
+                <input type="checkbox" checked={selectedUtilities.includes(u)} onChange={() => setSelectedUtilities(prev => toggleSet(prev, u))} style={{ accentColor: 'var(--brand, #7B1828)', width: 14, height: 14, cursor: 'pointer' }} />
+                {u}
+              </label>
+            ))}
+          </div>
+
+          {/* Buyer Type */}
+          <div style={sidebarHdg}>Buyer Type</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {BUYER_TYPES.map(b => (
+              <label key={b} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: 'var(--ink-muted, #6B6B6B)', fontFamily: "'Outfit', sans-serif" }}>
+                <input type="checkbox" checked={selectedBuyerTypes.includes(b)} onChange={() => setSelectedBuyerTypes(prev => toggleSet(prev, b))} style={{ accentColor: 'var(--brand, #7B1828)', width: 14, height: 14, cursor: 'pointer' }} />
+                {b}
+              </label>
+            ))}
+          </div>
+
+          {/* Title Status */}
+          <div style={sidebarHdg}>Title Status</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {TITLE_STATUS.map(t => (
+              <label key={t} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: 'var(--ink-muted, #6B6B6B)', fontFamily: "'Outfit', sans-serif" }}>
+                <input type="checkbox" checked={selectedTitleStatus.includes(t)} onChange={() => setSelectedTitleStatus(prev => toggleSet(prev, t))} style={{ accentColor: 'var(--brand, #7B1828)', width: 14, height: 14, cursor: 'pointer' }} />
+                {t}
+              </label>
+            ))}
+          </div>
+
           {/* Reset */}
-          {(selectedBeds.length + selectedTypes.length + selectedAmenities.length > 0) && (
-            <button onClick={() => { setSelectedBeds([]); setSelectedTypes([]); setSelectedAmenities([]); }}
+          {(selectedBeds.length + selectedTypes.length + selectedAmenities.length + selectedUtilities.length + selectedBuyerTypes.length + selectedTitleStatus.length > 0) && (
+            <button onClick={() => { setSelectedBeds([]); setSelectedTypes([]); setSelectedAmenities([]); setSelectedUtilities([]); setSelectedBuyerTypes([]); setSelectedTitleStatus([]); }}
               style={{ marginTop: 16, width: '100%', padding: '8px', background: 'none', border: '1.5px solid var(--border, #E0D9CE)', borderRadius: 4, fontSize: 13, color: 'var(--ink-muted, #6B6B6B)', cursor: 'pointer', fontFamily: "'Outfit', sans-serif" }}>
               Clear Filters
             </button>
@@ -230,7 +269,7 @@ function PropertiesContent() {
         {/* RESULTS */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 14, color: 'var(--ink-muted, #6B6B6B)', marginBottom: 20 }}>
-            {loading ? 'Loading...' : `Showing ${properties.length} verified ${properties.length === 1 ? 'listing' : 'listings'} in Zambia.`}
+            {loading ? 'Loading...' : `Showing ${properties.length} verified ${properties.length === 1 ? 'listing' : 'listings'} across Zambia. All properties title-checked before publication.`}
           </p>
 
           {loading ? (
