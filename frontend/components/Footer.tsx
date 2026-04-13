@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { LogoHorizontal } from './Logo';
+import Logo from './Logo';
 
 const COLS = [
   {
@@ -51,7 +51,7 @@ export default function Footer() {
 
         {/* Column 1 — Brand */}
         <div>
-          <LogoHorizontal variant="light" size="md" />
+          <Logo variant="light" width={145} />
           <p style={{ color: 'rgba(255,255,255,0.60)', fontSize: 14, lineHeight: 1.7, marginTop: 16, maxWidth: 280, fontFamily: "'Outfit', sans-serif" }}>
             A trusted, technology-enabled real estate platform. Simple for users. Disciplined for management. Built to scale nationally.
           </p>

@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LogoHorizontal } from './Logo';
+import Logo from './Logo';
 import { Menu, X } from 'lucide-react';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'https://done-space-backend-production.up.railway.app/api/v1';
@@ -82,7 +82,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
-            <LogoHorizontal variant="dark" size="sm" />
+            <Logo variant="dark" width={155} />
           </Link>
 
           {/* Desktop center nav */}

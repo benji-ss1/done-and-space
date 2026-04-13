@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Logo from '../../components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -35,14 +36,8 @@ export default function LoginPage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 420, padding: '0 24px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 40 }}>
-          <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-            <rect width="44" height="44" rx="12" fill="#8B1A2F"/>
-            <path d="M10 11h11c5.5 0 8.5 3.5 8.5 8.5S26.5 28 21 28H10V11z" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M14 31h14" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M17 35h11" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-          <h1 style={{ color: 'var(--text-primary)', fontSize: 22, fontWeight: 700, marginTop: 16, letterSpacing: '-0.02em' }}>Done & Space Properties</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Management System · Zambia</p>
+          <Logo variant="light" width={175} />
+          <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 12 }}>Management System · Zambia</p>
         </div>
         <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '36px 32px' }}>
           <h2 style={{ color: 'var(--text-primary)', fontSize: 17, fontWeight: 600, marginBottom: 4 }}>Sign in to your account</h2>

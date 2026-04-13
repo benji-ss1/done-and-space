@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Logo from '../../components/Logo';
 
 const navItems = [
   { href: '/dashboard', label: 'Overview', icon: '▦' },
@@ -34,14 +35,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'Outfit, sans-serif' }}>
       {/* Sidebar */}
       <div style={{ width: 240, background: 'var(--bg-surface)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, left: 0, bottom: 0 }}>
-        <div style={{ padding: '24px 20px 20px', borderBottom: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, background: '#8B1A2F', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, color: 'white' }}>D</div>
-            <div>
-              <div style={{ color: 'var(--text-primary)', fontSize: 13.5, fontWeight: 700 }}>Done & Space</div>
-              <div style={{ color: 'var(--text-muted)', fontSize: 11 }}>Properties Limited · Zambia</div>
-            </div>
-          </div>
+        <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid var(--border)' }}>
+          <Logo variant="light" width={140} />
         </div>
         <nav style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
           <div style={{ color: 'var(--text-muted)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', padding: '0 8px', marginBottom: 8 }}>MAIN MENU</div>

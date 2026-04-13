@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import PropertyCard from '../../../components/PropertyCard';
+import Logo from '../../../components/Logo';
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'https://done-space-backend-production.up.railway.app/api/v1';
 
@@ -353,10 +354,10 @@ export default function PropertyDetailPage() {
 
           {/* Price + Inquiry card */}
           <div style={{ background: 'white', border: '1px solid var(--border, #E0D9CE)', borderRadius: 4, borderTop: '3px solid var(--brand, #7B1828)', boxShadow: 'var(--shadow-card, 0 2px 16px rgba(123,24,40,0.08))' }}>
-            {/* Agent header — NO photo, just brand name */}
+            {/* Agent header — real logo, light variant on dark bg */}
             <div style={{ background: 'var(--brand, #7B1828)', padding: '16px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 16, fontWeight: 600, color: 'white' }}>Done &amp; Space Properties</p>
-              {p.reference_no && <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.60)', marginTop: 2 }}>({p.reference_no})</p>}
+              <Logo variant="light" width={120} />
+              {p.reference_no && <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.60)', marginTop: 6 }}>({p.reference_no})</p>}
               <div style={{ width: '100%', height: 1, background: 'rgba(255,255,255,0.15)', marginTop: 12 }} />
             </div>
 
