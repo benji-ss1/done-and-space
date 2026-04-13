@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 
 interface LogoProps {
   variant?: 'dark' | 'light';
@@ -7,24 +6,28 @@ interface LogoProps {
 }
 
 export default function Logo({ variant = 'dark', width = 160 }: LogoProps) {
-  const height = Math.round(width * 0.52);
+  const isLight = variant === 'light';
+  const containerWidth = width;
+  const containerHeight = 48;
+  // Negative marginTop crops out the stacked version at the top of the image,
+  // leaving only the horizontal logo visible at the bottom.
+  const marginTop = -52;
+
   return (
-    <Image
-      src="/doneandspacelogo.jpg"
-      alt="Done & Space Properties Limited"
-      width={width}
-      height={height}
-      priority
-      style={{
-        objectFit: 'contain',
-        objectPosition: 'center',
-        // On dark variant (cream navbar): multiply blends the white JPG bg into cream
-        mixBlendMode: variant === 'dark' ? 'multiply' : 'normal',
-        filter: variant === 'light' ? 'brightness(0) invert(1)' : 'none',
-      }}
-    />
+    <div style={{ overflow: 'hidden', height: `${containerHeight}px`, width: `${containerWidth}px` }}>
+      <img
+        src="/doneandspacelogo.jpg"
+        alt="Done & Space Properties Limited"
+        style={{
+          width: `${containerWidth}px`,
+          marginTop: `${marginTop}px`,
+          display: 'block',
+          filter: isLight ? 'brightness(0) invert(1)' : 'none',
+        }}
+      />
+    </div>
   );
 }
 
-// Named re-export for backwards compat with any import that uses { LogoHorizontal }
+// Named re-export for any import that still uses { LogoHorizontal }
 export { Logo as LogoHorizontal };
