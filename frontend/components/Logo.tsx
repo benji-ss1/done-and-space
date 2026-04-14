@@ -5,10 +5,9 @@ interface LogoProps {
   width?: number;
 }
 
-export default function Logo({ variant = 'dark', width = 148 }: LogoProps) {
+export default function Logo({ variant = 'dark', width = 152 }: LogoProps) {
   return (
     <div style={{
-      position: 'relative',
       width: `${width}px`,
       height: '46px',
       overflow: 'hidden',
@@ -18,16 +17,15 @@ export default function Logo({ variant = 'dark', width = 148 }: LogoProps) {
         src="/doneandspacelogo.jpg"
         alt="Done and Space Properties Limited"
         style={{
-          position: 'absolute',
+          position: 'relative',
           width: `${width}px`,
-          bottom: 0,
-          left: 0,
+          display: 'block',
           filter: variant === 'light' ? 'brightness(0) invert(1)' : 'none',
+          mixBlendMode: variant === 'dark' ? 'multiply' : 'normal',
         }}
       />
     </div>
   );
 }
 
-// Named re-export for any import that still uses { LogoHorizontal }
 export { Logo as LogoHorizontal };

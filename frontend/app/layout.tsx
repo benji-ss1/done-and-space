@@ -29,7 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         style={{ background: isPublic ? 'var(--cream, #F8F3ED)' : undefined }}
       >
         {isPublic && <Navbar />}
-        {children}
+        <main style={{ paddingTop: (isPublic && pathname !== '/') ? 72 : 0 }}>
+          {children}
+        </main>
         {isPublic && <Footer />}
         {isPublic && <WhatsAppFloat />}
       </body>
