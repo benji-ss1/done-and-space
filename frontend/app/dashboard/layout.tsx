@@ -23,6 +23,9 @@ const navItems: { href: string; label: string; icon: React.ReactNode }[] = [
   { href: '/dashboard/reports', label: 'Reports', icon: (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
   )},
+  { href: '/dashboard/ai', label: 'Simplify.AI', icon: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+  )},
   { href: '/dashboard/users', label: 'User Management', icon: (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
   )},
@@ -54,15 +57,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
         <nav style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
           <div style={{ color: 'var(--text-muted)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', padding: '0 8px', marginBottom: 8 }}>MAIN MENU</div>
+
           {navItems.map(item => {
             const active = pathname === item.href;
+            const isAI = item.href === '/dashboard/ai';
             return (
-              <Link key={item.href} href={item.href} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', borderRadius: 8, background: active ? 'var(--accent-light)' : 'transparent', color: active ? 'var(--accent)' : 'var(--text-secondary)', textDecoration: 'none', fontSize: 13.5, fontWeight: active ? 600 : 400, transition: 'all 0.15s' }}>
-                <span style={{ fontSize: 15 }}>{item.icon}</span>
+              <Link key={item.href} href={item.href} style={{
+                display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', borderRadius: 8,
+                background: active ? (isAI ? '#8B1A2F20' : 'var(--accent-light)') : 'transparent',
+                color: active ? (isAI ? '#c0374f' : 'var(--accent)') : 'var(--text-secondary)',
+                textDecoration: 'none', fontSize: 13.5, fontWeight: active ? 600 : 400, transition: 'all 0.15s',
+              }}>
+                <span style={{ fontSize: 15, color: isAI && !active ? '#8B1A2F80' : 'inherit' }}>{item.icon}</span>
                 {item.label}
+                {isAI && <span style={{ marginLeft: 'auto', fontSize: 9, fontWeight: 700, letterSpacing: '0.05em', background: '#8B1A2F20', color: '#c0374f', padding: '2px 6px', borderRadius: 4 }}>AI</span>}
               </Link>
             );
           })}
+          <div style={{ borderTop: '1px solid var(--border)', margin: '8px 0' }} />
+          <Link href="/dashboard/settings" style={{
+            display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', borderRadius: 8,
+            background: pathname === '/dashboard/settings' ? 'var(--accent-light)' : 'transparent',
+            color: pathname === '/dashboard/settings' ? 'var(--accent)' : 'var(--text-secondary)',
+            textDecoration: 'none', fontSize: 13.5, fontWeight: pathname === '/dashboard/settings' ? 600 : 400, transition: 'all 0.15s',
+          }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </Link>
         </nav>
         <div style={{ padding: '16px 12px', borderTop: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px' }}>
